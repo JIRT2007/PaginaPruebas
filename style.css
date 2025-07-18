@@ -1,0 +1,97 @@
+.body{
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.BarraMenu{
+  display: flex;
+  background-color: green;
+  height: 10%;
+  align-items: center;
+  
+}
+
+.titulo{
+  width: 5%;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.BotonRedireccion01{
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: auto;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.BotonRedireccion02{
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.PantallaInicio {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  margin-top: 5%;     
+}
+
+.logo {
+  max-width: 90%;  
+  height: auto;
+
+}
+
+.logo:hover {
+  transform: scale(1.05); 
+}
+
+.Informacion{
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+}
+
+.BotonRedireccion03, .BotonRedireccion04{
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  border-style: solid;
+  border-color: darkgreen;
+  height: 50px;
+}
+
+.DatosEmpresa{
+  display: flex;
+  margin-top: 30%;
+}
