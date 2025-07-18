@@ -2,12 +2,23 @@
   font-family: 'Ubuntu', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .BarraMenu{
   display: flex;
   background-color: green;
-  height: 10%;
+  height: 7%;
   align-items: center;
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 10px 0;
+  text-align: center;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 .titulo{
@@ -69,7 +80,7 @@
 .Informacion{
   display: flex;
   justify-content: center; 
-  align-items: center;    
+  align-items: center;
 }
 
 .BotonRedireccion03, .BotonRedireccion04{
@@ -79,7 +90,7 @@
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  display: block;
   font-size: 16px;
   margin-right: 10px;
   cursor: pointer;
@@ -93,5 +104,47 @@
 
 .DatosEmpresa{
   display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+  backdrop-filter: blur(10px);               /* Efecto de difuminado */
+  -webkit-backdrop-filter: blur(10px);       /* Soporte para Safari */
+  padding: 40px;
   margin-top: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  align-items: center;
+  font-family: 'Ubuntu', sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde tenue para dar profundidad */
+}
+
+.Reglas{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+  backdrop-filter: blur(10px);               /* Efecto de difuminado */
+  -webkit-backdrop-filter: blur(10px);       /* Soporte para Safari */
+  padding: 40px;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  font-family: 'Ubuntu', sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde tenue para dar profundidad */
+}
+
+
+.MapaUbicacion {
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto; 
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
