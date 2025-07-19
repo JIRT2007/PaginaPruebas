@@ -20,7 +20,7 @@ $id = mysqli_insert_id($conn);
 $_SESSION["ID"] = $id;
 $_SESSION["Nombre"] = $nombre;;
 
- header("Location: ../FRONT/version.php");
+ header("Location: ../FRONT/ConfiguracionPartida.php");
         exit();
 ?>
 

@@ -27,7 +27,7 @@ html {
   margin-left: 10px;
 }
 
-.BotonRedireccion01{
+.BotonRedireccion01, .BotonRedireccion02, .BotonRedireccion03, .BotonRedireccion04 {
   background-color: #4CAF50; 
   border: none;              
   color: white;
@@ -44,21 +44,6 @@ html {
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.BotonRedireccion02{
-  background-color: #4CAF50; 
-  border: none;              
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-}
 
 .PantallaInicio {
   display: flex;
@@ -83,24 +68,7 @@ html {
   align-items: center;
 }
 
-.BotonRedireccion03, .BotonRedireccion04{
-  background-color: #4CAF50; 
-  border: none;              
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  font-size: 16px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  border-style: solid;
-  border-color: darkgreen;
-  height: 50px;
-}
+
 
 .DatosEmpresa{
   display: flex;
