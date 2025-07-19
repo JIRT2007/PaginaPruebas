@@ -1,0 +1,3 @@
+Incroporar raton personalizado.
+Calcuadora de puntaje.
+Dinosaurios arrastrables.
