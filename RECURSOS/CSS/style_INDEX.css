@@ -116,3 +116,42 @@ html {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
+
+/* TABLETS */
+@media (max-width: 768px) {
+  .Registro {
+    width: 60%;
+    margin-top: 20%;
+    padding: 30px;
+  }
+
+  .controls,
+  .botonsRegistro,
+  .botonsInicio {
+    font-size: 15px;
+  }
+
+  .Registro h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* CELULARES */
+@media (max-width: 480px) {
+  .Registro {
+    width: 85%;
+    margin-top: 25%;
+    padding: 25px;
+  }
+
+  .controls,
+  .botonsRegistro,
+  .botonsInicio {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .Registro h1 {
+    font-size: 1.6rem;
+  }
+}
