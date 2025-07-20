@@ -1,219 +1,177 @@
-body {
+.body{
   font-family: 'Ubuntu', sans-serif;
-  margin: 0;
-  padding: 0;
 }
 
-.titulo {
-  width: 60px;
-  height: auto;
+html {
+  scroll-behavior: smooth;
 }
 
-.BarraMenu {
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 10px 20px;
-}
-
-.logo {
-body {
-  font-family: 'Ubuntu', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.titulo {
-  width: 60px;
-  height: auto;
-}
-
-.BarraMenu {
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 10px 20px;
-}
-
-.logo {
+.BarraMenu{
+  display: flex;
+  background-color: green;
+  height: 7%;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 600px;
-  height: auto;
+  z-index: 1000;
+  padding: 10px 0;
+  text-align: center;
+  font-family: 'Ubuntu', sans-serif;
 }
+
+.titulo{
+  width: 5%;
+  object-fit: cover;
+  margin-left: 2%
+}
+
+.BotonRedireccion01, .BotonRedireccion02, .BotonRedireccion05 {
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0.5%;
+  cursor: pointer;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.BotonRedireccion03, .BotonRedireccion04 {
+  display: flex;
+  background-color: #4CAF50; 
+  border: none;              
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
 
 .PantallaInicio {
   display: flex;
-  justify-content: center;
+  justify-content: center; 
   align-items: center;
-  min-height: 80vh;
-  padding-top: 10vh;
+  margin-top: 5%;  
+  text-align: center;   
 }
 
-.Informacion {
-  flex-direction: row;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: 30px auto;
-}
-
-.DatosEmpresa {
-  margin-top: 100px;
-}
-
-.Reglas {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-@media (max-width: 1024px) {
-  .PantallaInicio {
-    min-height: 60vh;
-    padding-top: 80px;
-  }
-
-  .BarraMenu {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .titulo {
-    width: 50px;
-    margin-bottom: 10px;
-  }
-
-  .BotonRedireccion01,
-  .BotonRedireccion02,
-  .BotonRedireccion03,
-  .BotonRedireccion04 {
-    margin: 5px;
-    width: 90%;
-  }
-
-  .Informacion {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-@media (max-width: 600px) {
-  .logo {
-    max-width: 90%;
-  }
-
-  .DatosEmpresa,
-  .Reglas {
-    width: 90%;
-    padding: 20px;
-    font-size: 0.95rem;
-  }
-
-  .MapaUbicacion {
-    width: 100%;
-  }
-
-  .BarraMenu {
-    padding: 5px 10px;
-  }
-
-  .BotonRedireccion01,
-  .BotonRedireccion02,
-  .BotonRedireccion03,
-  .BotonRedireccion04 {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-
-  .PantallaInicio {
-    padding-top: 60px;
-  }
-}
-
-  width: 100%;
-  max-width: 600px;
+.logo {
+  max-width: 90%;  
   height: auto;
+  margin-top: 50%;
+ 
 }
 
-.PantallaInicio {
+.logo:hover {
+  transform: scale(1.05); 
+}
+
+.Informacion{
   display: flex;
-  justify-content: center;
+  justify-content: center; 
   align-items: center;
-  min-height: 80vh;
-  padding-top: 10vh;
+  gap: 5%;
+  
 }
 
-.Informacion {
-  flex-direction: row;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: 30px auto;
+
+
+.DatosEmpresa{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+  backdrop-filter: blur(10px);               /* Efecto de difuminado */
+  -webkit-backdrop-filter: blur(10px);       /* Soporte para Safari */
+  padding: 40px;
+  margin-top: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  align-items: center;
+  font-family: 'Ubuntu', sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde tenue para dar profundidad */
 }
 
-.DatosEmpresa {
-  margin-top: 100px;
+.Reglas{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+  backdrop-filter: blur(10px);               /* Efecto de difuminado */
+  -webkit-backdrop-filter: blur(10px);       /* Soporte para Safari */
+  padding: 40px;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  font-family: 'Ubuntu', sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde tenue para dar profundidad */
 }
 
-.Reglas {
-  font-size: 1rem;
-  line-height: 1.6;
+
+.MapaUbicacion {
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto; 
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
-@media (max-width: 1024px) {
-  .PantallaInicio {
-    min-height: 60vh;
-    padding-top: 80px;
+/* TABLETS */
+@media (max-width: 768px) {
+  .Registro {
+    width: 60%;
+    margin-top: 20%;
+    padding: 30px;
   }
 
-  .BarraMenu {
-    flex-direction: column;
-    height: auto;
+  .controls,
+  .botonsRegistro,
+  .botonsInicio {
+    font-size: 15px;
   }
 
-  .titulo {
-    width: 50px;
-    margin-bottom: 10px;
-  }
-
-  .BotonRedireccion01,
-  .BotonRedireccion02,
-  .BotonRedireccion03,
-  .BotonRedireccion04 {
-    margin: 5px;
-    width: 90%;
-  }
-
-  .Informacion {
-    flex-direction: column;
-    align-items: center;
+  .Registro h1 {
+    font-size: 1.8rem;
   }
 }
 
-@media (max-width: 600px) {
-  .logo {
-    max-width: 90%;
+/* CELULARES */
+@media (max-width: 480px) {
+  .Registro {
+    width: 85%;
+    margin-top: 25%;
+    padding: 25px;
   }
 
-  .DatosEmpresa,
-  .Reglas {
-    width: 90%;
-    padding: 20px;
-    font-size: 0.95rem;
-  }
-
-  .MapaUbicacion {
-    width: 100%;
-  }
-
-  .BarraMenu {
-    padding: 5px 10px;
-  }
-
-  .BotonRedireccion01,
-  .BotonRedireccion02,
-  .BotonRedireccion03,
-  .BotonRedireccion04 {
+  .controls,
+  .botonsRegistro,
+  .botonsInicio {
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 8px 16px;
   }
 
-  .PantallaInicio {
-    padding-top: 60px;
+  .Registro h1 {
+    font-size: 1.6rem;
   }
 }
