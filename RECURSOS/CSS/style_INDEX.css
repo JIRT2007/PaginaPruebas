@@ -8,7 +8,7 @@ html {
 
 .BarraMenu{
   display: flex;
-  background-color: green;
+  background-color: red;
   height: 7%;
   align-items: center;
   position: fixed;
