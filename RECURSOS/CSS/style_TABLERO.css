@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Imagen de fondo desenfocada */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../RECURSOS/IMAGENES/FondoJuego.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(8px) brightness(0.7);
+  z-index: -1;
+}
+
+/* Contenedor del tablero */
+.tablero {
+  background-image: url("../RECURSOS/IMAGENES/SpriteTablero.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* Controla el tamaño aquí */
+  width: 50vw;  /* Cambia este valor */
+  height: 50vh; /* Cambia este valor */
+
+  /* O usa porcentajes */
+  /* width: 50vw; */
+  /* height: 50vh; */
+
+  /* Margen considerable */
+  margin: 80px;
+
+  /* Opcional: borde para ver mejor el área */
+  /* border: 2px solid rgba(255,255,255,0.3); */
+
+  /* Asegurar que esté encima del fondo */
+  position: relative;
+  z-index: 1;
+}

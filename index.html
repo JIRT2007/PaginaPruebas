@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebPruebas</title>
   <link rel="stylesheet" href="RECURSOS/CSS/style_INDEX.css">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 </head>
 
 <style>
@@ -19,9 +20,12 @@
   
 <nav class="BarraMenu">
   <img src="RECURSOS/IMAGENES/isotipo.png" alt="Logo" class="titulo">
-  <input class="BotonRedireccion01" type="button" value="Reglamento" onclick="window.location.href='#Reglas'"/>
-  <input class="BotonRedireccion02" type="button" value="Sobre BrontoGames" onclick="window.location.href='#Informacion'"/>
-    <input class="BotonRedireccion05" type="button" value="Regresar al inicio" onclick="window.location.href='#Inicio'"/>
+
+  <button class="BotonRedireccion01" onclick="window.location.href='#Reglas'"><i class="fa-regular fa-book"></i>Reglamento</button>
+
+  <button class="BotonRedireccion02" onclick="window.location.href='#Informacion'"><i class="fa-regular fa-building-flag"></i>Sobre BrontoGames</button>
+  
+  <button class="BotonRedireccion05" onclick="window.location.href='#Inicio'"><i class="fa-regular fa-house"></i>Regresar al inicio</button>
 </nav>
 
 <section id="Inicio" class="PantallaInicio">
