@@ -4,58 +4,144 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../RECURSOS/CSS/style_TABLERO.css">
   <title>Partida</title>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 90vh;
+      padding: 2%;
+      box-sizing: border-box;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .tablero {
+      background-image: url("../RECURSOS/IMAGENES/SpriteTablero.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 65%;
+      height: 79%;
+      border: 7px solid rgba(255, 255, 255, 1);
+      position: relative;
+    }
+
+    .tab {
+      background-color: beige;
+      width: 25%;
+      height: 70vh;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 5%;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("../RECURSOS/IMAGENES/fondoInicio.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: blur(8px) brightness(0.7);
+      z-index: -1;
+    }
+
+    .draggable {
+      width: 70px;
+      height: 70px;
+      margin: 5px;
+      cursor: grab;
+    }
+
+    .draggable img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .dragging {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1000;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="tablero"></div>
-    <div class="tab"></div>
+  <div class="tablero" id="tablero"></div>
 
-    <style>
-        body {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 90vh;
-        padding: 2%;
-        box-sizing: border-box;
-}
+  <div class="tab" id="TomaDinosaurios">
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoRojoSprite.png" alt="DinoRojo"></div>
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoAzulSprite.png" alt="DinoAzul"></div>
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoAmarilloSprite.png" alt="DinoAmarillo"></div>
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoNaranjaSprite.png" alt="DinoNaranja"></div>
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoVerdeSprite.png" alt="DinoVerde"></div>
+    <div class="draggable"><img src="../RECURSOS/IMAGENES/DinoVioletaSprite.png" alt="DinoVioleta"></div>
+  </div>
 
-        .tablero {
-        background-image: url("../RECURSOS/IMAGENES/SpriteTablero.png");
-        background-size: cover; 
-        background-repeat: no-repeat;
-        background-position: center;
-        width: 65%; /* Más ancho */
-        height: 79%;
-        border: 7px solid rgba(255, 255, 255, 1);
-}
+  <script>
+    const tablero = document.getElementById("tablero");
+    let draggingElem = null;
 
-        .tab {
-        background-color: beige;
-        width: 25%;
-        height: 70vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-sizing: border-box;
-        border-radius: 5%;
-}
+    document.querySelectorAll(".draggable").forEach(elem => {
+      elem.addEventListener("mousedown", (e) => {
+        const clone = elem.cloneNode(true);
+        clone.classList.add("dragging");
+        document.body.appendChild(clone);
+        draggingElem = clone;
 
-        body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("../RECURSOS/IMAGENES/fondoInicio.png");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        filter: blur(8px) brightness(0.7);
-        z-index: -1;
+        moveAt(e.pageX, e.pageY);
+
+        function moveAt(x, y) {
+          draggingElem.style.left = x - draggingElem.offsetWidth / 2 + "px";
+          draggingElem.style.top = y - draggingElem.offsetHeight / 2 + "px";
         }
-        </style>
+
+        function onMouseMove(e) {
+          moveAt(e.pageX, e.pageY);
+        }
+
+        document.addEventListener("mousemove", onMouseMove);
+
+        document.addEventListener("mouseup", function onMouseUp(e) {
+          document.removeEventListener("mousemove", onMouseMove);
+          document.removeEventListener("mouseup", onMouseUp);
+
+          // Verificar si se soltó sobre el tablero
+          const tableroRect = tablero.getBoundingClientRect();
+          if (
+            e.clientX >= tableroRect.left &&
+            e.clientX <= tableroRect.right &&
+            e.clientY >= tableroRect.top &&
+            e.clientY <= tableroRect.bottom
+          ) {
+            draggingElem.style.left = e.pageX - tableroRect.left - draggingElem.offsetWidth / 2 + "px";
+            draggingElem.style.top = e.pageY - tableroRect.top - draggingElem.offsetHeight / 2 + "px";
+            draggingElem.classList.remove("dragging");
+            draggingElem.style.position = "absolute";
+            tablero.appendChild(draggingElem);
+          } else {
+            // Si no está dentro del tablero, eliminar el clon
+            draggingElem.remove();
+          }
+
+          draggingElem = null;
+        });
+      });
+    });
+  </script>
 </body>
 </html>
