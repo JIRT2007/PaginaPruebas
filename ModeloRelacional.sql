@@ -6,12 +6,14 @@ CREATE TABLE JUGADOR(
     Puntuacion_total_jugador INT NOT NULL 
 );
 
-CREATE TABLE Partida_Draftosaurus(
-    ID_Partida INT PRIMARY KEY,
-    Numero_Jugadores INT NOT NULL,
-    Estado VARCHAR(20) NOT NULL,
-    Puntuacion_total_partida INT NOT NULL,
+CREATE TABLE partida_draftosaurus (
+  id_partida INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT,
+  numero_jugadores INT NOT NULL,
+  estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+  puntuacion_total_partida INT DEFAULT NULL
 );
+
 
 CREATE TABLE Calculo_Puntaje(
     ID_Jugador INT REFERENCES JUGADOR(ID_Jugador)
