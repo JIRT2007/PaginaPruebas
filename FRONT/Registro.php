@@ -17,7 +17,7 @@
 </head>  
 <body>
 
-    <form class="Registro" action="../BACK/procesar_registro.php" method="post">
+    <form class="Registro" action="../BACK/procesar_registro.php" method="POST">
         <h1>Registro</h1>
         <input class="controls" type="text" name="nombre" id="nombre" placeholder="Nombre" required>
         <br>
