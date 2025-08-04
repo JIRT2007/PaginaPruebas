@@ -1,7 +1,9 @@
 CREATE DATABASE Draftosaurus;
-
+USE Draftosaurus;
 CREATE TABLE USUARIO(
     ID_Usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL,
+    password VARCHAR(70) NOT NULL
 );
 
 CREATE TABLE partida_draftosaurus (
