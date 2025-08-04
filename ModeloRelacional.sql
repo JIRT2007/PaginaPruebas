@@ -10,7 +10,7 @@ CREATE TABLE partida_draftosaurus (
   numero_jugadores INT NOT NULL,
   estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
   puntuacion_ganador_partida INT DEFAULT 0
-  jugador_ganador INT REFERENCES JUGADOR...
+  jugador_ganador INT REFERENCES JUGADOR (ID_Jugador)
 );
 
 CREATE TABLE JUGADOR(
@@ -21,7 +21,7 @@ CREATE TABLE JUGADOR(
 );
 
 CREATE TABLE Dinosaurios(
-    ID_Dinosaurios INT PRIMARY KEY,
+    ID_Dinosaurios INT AUTO_INCREMENT PRIMARY KEY,
     Raza VARCHAR(30) NOT NULL
 );
 
@@ -32,35 +32,35 @@ CREATE TABLE mano_Dinosaurios(
 );
 
 CREATE TABLE Dado(
-    Cara INT PRIMARY KEY,
+    Cara INT AUTO_INCREMENT PRIMARY KEY,
     Restriccion VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Turnos(
-    ID_Turno INT PRIMARY KEY,
+    ID_Turno INT AUTO_INCREMENT PRIMARY KEY,
     NumeroDeTurno INT NOT NULL,
     NumeroDeRonda INT NOT NULL,
     Cara_Dado INT REFERENCES Dado(Cara),
-    ID_Partida INT REFERENCES ...
+    ID_Partida INT REFERENCES partida_drafotsaurus (id_partida)
 );
 
 CREATE TABLE Tablero(
-    id_tablero
-    id_partida 
-    ID_Jugador
+    id_tablero INT AUTO_INCREMENT PRIMARY KEY,
+    id_partida REFERENCES partida_drafotsaurus (id_partida),
+    ID_Jugador REFERENCES JUGADOR (ID_Jugador),
     puntuacion_total INT DEFAULT 0
 );
 
 CREATE TABLE Region(
-    ID_Region INT PRIMARY KEY,
+    ID_Region INT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Region VARCHAR(50) NOT NULL,
     Puntos INT NOT NULL DEFAULT 0,
-    id_tablero,
+    id_tablero REFERENCES Tablero (id_tablero),
     Cantidad_Dinosaurios INT NOT NULL,
     Restricciones_Puntaje VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE dino_region(
-    ID_Region
-    ID_Dinosaurios
+    ID_Region REFERENCES Region (ID_Region),
+    ID_Dinosaurios REFERENCES Dinosaurios (ID_Dinosaurios)
 );
