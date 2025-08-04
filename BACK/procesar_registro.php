@@ -1,4 +1,3 @@
-
 <?php 
 session_start();
 
@@ -6,43 +5,13 @@ session_start();
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'registro_jugadores';
+$database = 'Draftosaurus';
 
 try {
     // Primero conectar sin especificar la base de datos para poder crearla
-    $conn_temp = mysqli_connect($hostname, $username, $password);
-    if (!$conn_temp) {
-        die('Fallo la conexión inicial: ' . mysqli_connect_error());
-    }
-    
-    // Crear la base de datos si no existe
-    $sql = "CREATE DATABASE IF NOT EXISTS $database";
-    if (mysqli_query($conn_temp, $sql)) {
-        echo "Base de datos '$database' verificada/creada con éxito<br>";
-    } else {
-        echo "Error creando base de datos: " . mysqli_error($conn_temp) . "<br>";
-    }
-    
-    // Cerrar conexión temporal
-    mysqli_close($conn_temp);
-    
-    // Ahora conectar a la base de datos específica
-    $conn = mysqli_connect($hostname, $username, $password, $database);
+    $conn = mysqli_connect($hostname, $username, $password);
     if (!$conn) {
-        die('Fallo la conexión a la base de datos: ' . mysqli_connect_error());
-    }
-    
-    // Crear la tabla si no existe
-    $sql = "CREATE TABLE IF NOT EXISTS jugadores( 
-                          id INT AUTO_INCREMENT PRIMARY KEY, 
-                          nombre VARCHAR(100) NOT NULL, 
-                          password VARCHAR(255) NOT NULL
-                          )";
-    
-    if (mysqli_query($conn, $sql)) {
-        echo "Tabla 'jugadores' verificada/creada con éxito<br>";
-    } else {
-        echo "Error creando tabla: " . mysqli_error($conn) . "<br>";
+        die('Fallo la conexión inicial: ' . mysqli_connect_error());
     }
     
     // Verificar que se recibieron los datos del formulario
@@ -55,7 +24,7 @@ try {
     $password_hash = password_hash($password_raw, PASSWORD_DEFAULT);
     
     // Usar prepared statements para mayor seguridad
-    $stmt = mysqli_prepare($conn, "INSERT INTO jugadores (nombre, password) VALUES (?, ?)");
+    $stmt = mysqli_prepare($conn, "INSERT INTO Draftosaurus.USUARIO (nombre, password) VALUES (?, ?)");
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, "ss", $nombre, $password_hash);
         
@@ -88,5 +57,7 @@ try {
     if (isset($conn) && $conn) {
         mysqli_close($conn);
     }
+
+    echo "AAAA";
 }
 ?>
