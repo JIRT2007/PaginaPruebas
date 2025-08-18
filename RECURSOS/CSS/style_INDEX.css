@@ -21,6 +21,14 @@ html {
   font-family: 'Ubuntu', sans-serif;
 }
 
+.BarraMenu .titulo {
+  max-width: 100%;      
+  height: auto;        
+  width: 60px;          
+  cursor: pointer;
+  transition: width 0.3s ease;
+}
+
 .titulo{
   width: 5%;
   object-fit: cover;
@@ -128,6 +136,8 @@ html {
 }
 
 
+
+
 .MapaUbicacion {
   width: 80%;
   max-width: 800px;
@@ -186,3 +196,72 @@ html {
     
   }
 }
+
+  /* Estilo del nav */
+  .BarraMenu {
+    background-color: darkgreen;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .BarraMenu .titulo {
+    height: 60px;
+    cursor: pointer;
+  }
+
+  /* Menú lateral oculto por defecto */
+  .Menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: green;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 70px;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+
+  /* Cuando el menú está abierto */
+  .Menu.open {
+    width: 250px;
+  }
+
+  /* Botones dentro del menú */
+  .Menu button,
+  .Menu input[type="button"] {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 12px 10px;
+    font-size: 18px;
+    color: white;
+    background-color: transparent;
+    border: 1px solid #555;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .Menu button:hover,
+  .Menu input[type="button"]:hover {
+    background-color: darkgreen;
+  }
+
+  /* Iconos FontAwesome en botones */
+  .Menu i {
+    margin-right: 10px;
+  }
+
+  /* Botón para cerrar menú */
+  .Menu .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;}

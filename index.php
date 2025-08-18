@@ -19,14 +19,43 @@
 <body>
   
 <nav class="BarraMenu">
-  <img src="RECURSOS/IMAGENES/isotipo.png" alt="Logo" class="titulo">
-
-  <button class="BotonRedireccion01" onclick="window.location.href='#Reglas'"><i class="fa-regular fa-book"></i>Reglamento</button>
-
-  <button class="BotonRedireccion02" onclick="window.location.href='#Informacion'"><i class="fa-regular fa-building-flag"></i>Sobre BrontoGames</button>
-  
-  <button class="BotonRedireccion05" onclick="window.location.href='#Inicio'"><i class="fa-regular fa-house"></i>Regresar al inicio</button>
+  <img src="RECURSOS/IMAGENES/isotipo.png" alt="Logo" class="titulo" onclick="toggleMenu()" />
 </nav>
+
+<div class="Menu" id="menuLateral">
+  <span class="close-btn" onclick="toggleMenu()">&times;</span>
+
+    <button class="BotonRedireccion05" onclick="window.location.href='#Inicio'">
+    <i class="fa-regular fa-house"></i> Regresar al inicio
+  </button>
+
+    <button class="BotonRedireccion02" onclick="window.location.href='#Informacion'">
+    <i class="fa-regular fa-building-flag"></i> Sobre BrontoGames
+  </button>
+
+  <button class="BotonRedireccion01" onclick="window.location.href='#Reglas'">
+    <i class="fa-regular fa-book"></i> Reglamento
+  </button>
+
+
+  <input class="BotonRedireccion03" type="button" value="Registrarse" onclick="window.location.href='FRONT/Registro.php'" />
+</div>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("menuLateral");
+    menu.classList.toggle("open");
+  }
+
+  window.addEventListener('click', function(event) {
+    const menu = document.getElementById("menuLateral");
+    const img = document.querySelector('.BarraMenu .titulo');
+    if (!menu.contains(event.target) && event.target !== img) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+
 
 <section id="Inicio" class="PantallaInicio">
   <a href="">
@@ -35,7 +64,7 @@
 </section>
 
 <section class="Informacion">
-  <input class="BotonRedireccion03" type="button" value="Jugar Draftosaurus🕹️" onclick="window.location.href='FRONT/Registro.php'"/> 
+  <input class="BotonRedireccion03" type="button" value="Jugar Draftosaurus🕹️" onclick="window.location.href='FRONT/login.php'"/> 
   <input class="BotonRedireccion04" type="button" value="Calcular puntaje" onclick="window.location.href='FRONT/Calculadora.html'"/>
 </section>
   
@@ -141,5 +170,7 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 # Contar los puntos y determinar."<br>
     </h3>
 </section>
+
+
 </body>
 </html>

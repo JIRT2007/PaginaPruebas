@@ -1,9 +1,5 @@
-<?php
-session_start();
-if(!isset($_SESSION["ID"]) ){
-  header("location:Registro.php");
-}
-?>
+<?php include '../SEGURIDAD/proteccion.php';?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +38,7 @@ if(!isset($_SESSION["ID"]) ){
       <input class="botonJUEGO" type="button" value="JUGAR" id="botonJugar" onclick="mapaVersion()" disabled>
 
 <br>
-      <input class="botonREGRESAR" type="button" value="Regresar al inicio" onclick="window.location.href='../index.html'">
+      <input class="botonREGRESAR" type="button" value="Regresar al inicio" onclick="window.location.href='../index.php'">
     </section>
   </form>
 
@@ -60,7 +56,7 @@ if(!isset($_SESSION["ID"]) ){
       const cantidad = document.getElementById("cantidadJugadores").value;
 
       // Redirige pasando el número de jugadores como parámetro en la URL
-      window.location.href = "Juego.html";
+      window.location.href = "Juego.php";
 
     }
   </script>

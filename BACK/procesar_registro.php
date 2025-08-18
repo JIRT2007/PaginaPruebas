@@ -24,7 +24,7 @@ try {
     $password_hash = password_hash($password_raw, PASSWORD_DEFAULT);
     
     // Usar prepared statements para mayor seguridad
-    $stmt = mysqli_prepare($conn, "INSERT INTO Draftosaurus.USUARIO (nombre, password) VALUES (?, ?)");
+    $stmt = mysqli_prepare($conn, "INSERT INTO Draftosaurus.Usuario (nombre, password) VALUES (?, ?)");
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, "ss", $nombre, $password_hash);
         
@@ -39,7 +39,7 @@ try {
             mysqli_stmt_close($stmt);
             mysqli_close($conn);
             
-            header("Location: ../FRONT/ConfiguracionPartida.php");
+            header("Location: ../index.php");
             exit();
         } else {
             echo "Error al insertar usuario: " . mysqli_stmt_error($stmt);
@@ -58,6 +58,5 @@ try {
         mysqli_close($conn);
     }
 
-    echo "AAAA";
 }
 ?>
