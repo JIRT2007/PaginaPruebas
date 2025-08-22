@@ -265,3 +265,15 @@ html {
     font-size: 30px;
     color: white;
     cursor: pointer;}
+
+    .logoIG {
+      width: 30%;
+      height: 30%;
+      margin-top: 10%;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .logoIG:hover {
+      transform: scale(1.1); 
+    }

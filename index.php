@@ -73,7 +73,6 @@
   <p>Presentamos BrontoGames, una empresa dedicada al desarrollo de software, donde la temática principal gira en torno a los dinosaurios.
 Mezclamos lo moderno de los videojuegos y experiencias recreativas, con el universo prehistórico de los dinosaurios.
 Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cretacico. Nos basamos en el Brontosaurus para el nombre y logo de nuestra empresa, buscando generar impacto e impresión, buscamos dejar una huella, tal como este lo haría en sus épocas, por ello fue apodado como “Lagarto trueno”.
-</p>
 
  <div class="MapaUbicacion">
   <iframe 
@@ -86,6 +85,13 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
     referrerpolicy="no-referrer-when-downgrade">
   </iframe>
 </div>
+
+<div class="Instagram">
+  <a href="https://fontawesome.com/icons/instagram?f=brands&s=solid" target="_blank">
+      <img src="RECURSOS/IMAGENES/instagram-brands-solid-full.svg" alt="Logo" class="logoIG" onclick="toggleMenu()"><img/>
+    </a>
+    <h3>Siguenos en Instagram</h3>
+</p>
 
 </section>
 
