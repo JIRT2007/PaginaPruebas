@@ -1,0 +1,78 @@
+CREATE DATABASE draftosaurus;
+USE draftosaurus;
+
+CREATE TABLE usuario(
+    ID_Usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL,
+    password VARCHAR(70) NOT NULL
+);
+
+CREATE TABLE jugador(
+    ID_Jugador INT AUTO_INCREMENT PRIMARY KEY,
+    ID_UsuarioJugador INT NOT NULL,
+    FOREIGN KEY (ID_UsuarioJugador) REFERENCES usuario (ID_Usuario)
+);
+
+CREATE TABLE administrador(
+    ID_Admin INT AUTO_INCREMENT PRIMARY KEY,
+    ID_UsuarioAdmin INT NOT NULL,
+    FOREIGN KEY (ID_UsuarioAdmin) REFERENCES usuario (ID_Usuario) 
+);
+
+CREATE TABLE partida_draftosaurus (
+    ID_Partida INT AUTO_INCREMENT PRIMARY KEY,
+    ID_JugadorPartida INT NOT NULL,
+    jugador_ganador INT,
+    numero_jugadores INT NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    FOREIGN KEY (ID_JugadorPartida) REFERENCES usuario(ID_Usuario),
+    FOREIGN KEY (jugador_ganador) REFERENCES jugador (ID_Jugador)
+);
+
+CREATE TABLE dado(
+    ID_Dado INT AUTO_INCREMENT PRIMARY KEY,
+    CaraDado VARCHAR(20),
+    ID_JugadorDado INT NOT NULL,
+    ID_PartidaDado INT NOT NULL,
+    FOREIGN KEY (ID_JugadorDado) REFERENCES jugador (ID_Jugador),
+    FOREIGN KEY (ID_PartidaDado) REFERENCES partida_draftosaurus (ID_Partida)
+);
+
+CREATE TABLE ronda(
+    ID_Ronda INT AUTO_INCREMENT PRIMARY KEY,
+    ID_PartidaRonda INT NOT NULL,
+    NumRonda INT, 
+    FOREIGN KEY (ID_PartidaRonda) REFERENCES partida_draftosaurus (ID_Partida)
+);
+
+CREATE TABLE turnos(
+    ID_Turnos INT AUTO_INCREMENT PRIMARY KEY,
+    ID_JugadorTurnos INT NOT NULL,
+    FOREIGN KEY (ID_JugadorTurnos) REFERENCES jugador (ID_Jugador)
+);
+
+CREATE TABLE tablero(
+    ID_Tablero INT AUTO_INCREMENT PRIMARY KEY,
+    ID_PartidaTablero INT NOT NULL,
+    ID_JugadorTablero INT NOT NULL,
+    FOREIGN KEY (ID_PartidaTablero) REFERENCES partida_draftosaurus (ID_Partida),
+    FOREIGN KEY (ID_JugadorTablero) REFERENCES jugador (ID_Jugador)
+);
+
+CREATE TABLE recintos(
+    ID_Recinto INT AUTO_INCREMENT PRIMARY KEY,
+    ID_TableroRecinto INT NOT NULL,
+    FOREIGN KEY (ID_TableroRecinto) REFERENCES tablero (ID_Tablero)
+);
+
+CREATE TABLE dinosaurios(
+    ID_Dinosaurio INT AUTO_INCREMENT PRIMARY KEY,
+    ID_JugadorDinosaurio INT NOT NULL,
+    ID_RecintoDinosaurio INT NOT NULL,
+    Especie VARCHAR(10),
+    TREX BOOLEAN,
+    FOREIGN KEY (ID_JugadorDinosaurio) REFERENCES jugador (ID_Jugador),
+    FOREIGN KEY (ID_RecintoDinosaurio) REFERENCES recintos (ID_Recinto)
+);
+
+

@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pass   = trim($_POST["password"]);
 
     // Buscar usuario
-    $stmt = $conn->prepare("SELECT ID_Usuario, nombre, password FROM Usuario WHERE nombre = ?");
+    $stmt = $conn->prepare("SELECT ID_Usuario, nombre, password FROM usuario WHERE nombre = ?");
     $stmt->bind_param("s", $nombre);
     $stmt->execute();
     $resultado = $stmt->get_result();
