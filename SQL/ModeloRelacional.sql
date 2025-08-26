@@ -19,14 +19,32 @@ CREATE TABLE administrador(
     FOREIGN KEY (ID_UsuarioAdmin) REFERENCES usuario (ID_Usuario) 
 );
 
+-- CREATE TABLE partida_draftosaurus (
+--     ID_Partida INT AUTO_INCREMENT PRIMARY KEY,
+--     ID_JugadorPartida INT NOT NULL,
+--     jugador_ganador INT,
+--     numero_jugadores INT NOT NULL,
+--     estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+--     FOREIGN KEY (ID_JugadorPartida) REFERENCES usuario(ID_Usuario),
+--     FOREIGN KEY (jugador_ganador) REFERENCES jugador (ID_Jugador)
+-- );
+
 CREATE TABLE partida_draftosaurus (
     ID_Partida INT AUTO_INCREMENT PRIMARY KEY,
-    ID_JugadorPartida INT NOT NULL,
+    Player1 INT NOT NULL,
+    Player2 INT,
+    Player3 INT,
+    Player4 INT,
+    Player5 INT,
     jugador_ganador INT,
     numero_jugadores INT NOT NULL,
     estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
-    FOREIGN KEY (ID_JugadorPartida) REFERENCES usuario(ID_Usuario),
-    FOREIGN KEY (jugador_ganador) REFERENCES jugador (ID_Jugador)
+    FOREIGN KEY (Player1) REFERENCES jugador(ID_Jugador),
+    FOREIGN KEY (Player2) REFERENCES jugador(ID_Jugador),
+    FOREIGN KEY (Player3) REFERENCES jugador(ID_Jugador),
+    FOREIGN KEY (Player4) REFERENCES jugador(ID_Jugador),
+    FOREIGN KEY (Player5) REFERENCES jugador(ID_Jugador),
+    FOREIGN KEY (jugador_ganador) REFERENCES jugador(ID_Jugador)
 );
 
 CREATE TABLE dado(
@@ -74,5 +92,3 @@ CREATE TABLE dinosaurios(
     FOREIGN KEY (ID_JugadorDinosaurio) REFERENCES jugador (ID_Jugador),
     FOREIGN KEY (ID_RecintoDinosaurio) REFERENCES recintos (ID_Recinto)
 );
-
-

@@ -1,1 +1,1 @@
-Posible necesidad de una tabla que represente a los jugadores que iniciaron la partida del juego.
+Terminar tabla de dinos.
