@@ -3,7 +3,7 @@ USE draftosaurus;
 
 CREATE TABLE usuario(
     ID_Usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
     password VARCHAR(70) NOT NULL
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE partida_draftosaurus (
     Player5 INT,
     jugador_ganador INT,
     numero_jugadores INT NOT NULL,
-    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    estado VARCHAR(50) NOT NULL DEFAULT 'pendiente',
     FOREIGN KEY (Player1) REFERENCES jugador(ID_Jugador),
     FOREIGN KEY (Player2) REFERENCES jugador(ID_Jugador),
     FOREIGN KEY (Player3) REFERENCES jugador(ID_Jugador),
@@ -47,9 +47,23 @@ CREATE TABLE partida_draftosaurus (
     FOREIGN KEY (jugador_ganador) REFERENCES jugador(ID_Jugador)
 );
 
+CREATE TABLE tablero(
+    ID_Tablero INT AUTO_INCREMENT PRIMARY KEY,
+    ID_PartidaTablero INT NOT NULL,
+    ID_JugadorTablero INT NOT NULL,
+    FOREIGN KEY (ID_PartidaTablero) REFERENCES partida_draftosaurus (ID_Partida),
+    FOREIGN KEY (ID_JugadorTablero) REFERENCES jugador (ID_Jugador)
+);
+
+CREATE TABLE recintos(
+    ID_Recinto INT AUTO_INCREMENT PRIMARY KEY,
+    ID_TableroRecinto INT NOT NULL,
+    FOREIGN KEY (ID_TableroRecinto) REFERENCES tablero (ID_Tablero)
+);
+
 CREATE TABLE dado(
     ID_Dado INT AUTO_INCREMENT PRIMARY KEY,
-    CaraDado VARCHAR(20),
+    CaraDado VARCHAR(50),
     ID_JugadorDado INT NOT NULL,
     ID_PartidaDado INT NOT NULL,
     FOREIGN KEY (ID_JugadorDado) REFERENCES jugador (ID_Jugador),
@@ -69,25 +83,11 @@ CREATE TABLE turnos(
     FOREIGN KEY (ID_JugadorTurnos) REFERENCES jugador (ID_Jugador)
 );
 
-CREATE TABLE tablero(
-    ID_Tablero INT AUTO_INCREMENT PRIMARY KEY,
-    ID_PartidaTablero INT NOT NULL,
-    ID_JugadorTablero INT NOT NULL,
-    FOREIGN KEY (ID_PartidaTablero) REFERENCES partida_draftosaurus (ID_Partida),
-    FOREIGN KEY (ID_JugadorTablero) REFERENCES jugador (ID_Jugador)
-);
-
-CREATE TABLE recintos(
-    ID_Recinto INT AUTO_INCREMENT PRIMARY KEY,
-    ID_TableroRecinto INT NOT NULL,
-    FOREIGN KEY (ID_TableroRecinto) REFERENCES tablero (ID_Tablero)
-);
-
 CREATE TABLE dinosaurios(
     ID_Dinosaurio INT AUTO_INCREMENT PRIMARY KEY,
     ID_JugadorDinosaurio INT NOT NULL,
     ID_RecintoDinosaurio INT NOT NULL,
-    Especie VARCHAR(10),
+    Especie VARCHAR(50),
     TREX BOOLEAN,
     FOREIGN KEY (ID_JugadorDinosaurio) REFERENCES jugador (ID_Jugador),
     FOREIGN KEY (ID_RecintoDinosaurio) REFERENCES recintos (ID_Recinto)
