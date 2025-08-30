@@ -8,7 +8,7 @@ session_start();
 $servername = "localhost";
 $username   = "root";
 $password   = "";
-$dbname     = "Draftosaurus";
+$dbname     = "draftosaurus";
 
 // Conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
