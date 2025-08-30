@@ -8,7 +8,7 @@
       margin: 0;
       background-color: #f0f0f0;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: 'Ubuntu', sans-serif;
     }
 
     body::before {
@@ -62,7 +62,7 @@
       height: 90%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+     
       padding: 10px;
       box-sizing: border-box;
       border-radius: 10px;
@@ -115,4 +115,52 @@
     .BotonRedireccionObtenerDinos:hover {
       background-color: darkgrey;
       transform: translateY(-2px);
+    }
+
+    .Dado {
+      background-color: #4CAF50;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      transition: transform 0.2s, background-color 0.2s;
+      margin-top:5%;
+    }
+
+    .CambioTurno{
+      background-color:#f39c12;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      transition: transform 0.2s, background-color 0.2s;
+      margin-top:5%;
+    }
+
+    .ObtenerDino{
+      background-color:#c0392b;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      transition: transform 0.2s, background-color 0.2s;
+      margin-top:5%;
+    }
+
+    .Salir{
+      background-color:#2980b9;
+      border: none;
+      padding: 19px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      transition: transform 0.2s, background-color 0.2s;
+      margin-top:5%;
     }
