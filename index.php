@@ -87,7 +87,7 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 </div>
 
 <div class="Instagram">
-  <a href="https://fontawesome.com/icons/instagram?f=brands&s=solid" target="_blank">
+  <a href="https://www.instagram.com/brontogames?igsh=MThyNjlhMjBkZXZqNA==" target="_blank">
       <img src="RECURSOS/IMAGENES/instagram-brands-solid-full.svg" alt="Logo" class="logoIG" onclick="toggleMenu()"><img/>
     </a>
     <h3>Siguenos en Instagram</h3>

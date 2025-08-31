@@ -18,8 +18,8 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      width: 65%;
-      height: 79%;
+      width: 70%;
+      height: 80%;
       border: 7px solid rgba(255, 255, 255, 1);
       position: relative;
     }
@@ -238,6 +238,39 @@
     // Genera dinos al iniciar la partida automáticamente
     generarDinos();
   });
+
+  //Cantidad de dinos por recinto
+  const limitePorZona = {
+  "region region-top-left dropzone": 6,
+  "region region-top-right dropzone": 1,
+  "region region-middle-left dropzone": 3,
+  "region region-middle-right dropzone": 6,
+  "region region-bottom-left dropzone": 12,
+  "region region-bottom-right dropzone": 1,
+  "region region-center dropzone": 60
+};
+
+zone.addEventListener("drop", e => {
+  e.preventDefault();
+
+  const idZona = zone.classList[1]; // el nombre de la zona
+  const cantidadActual = zone.querySelectorAll("img").length;
+  const limite = limitePorZona[idZona];
+
+  if (cantidadActual >= limite) {
+    alert("Este recinto ya está lleno de dinosaurios 🦖");
+    return; // no deja colocar más
+  }
+
+  // si todavía hay espacio, coloca el dino normalmente
+  const source = document.querySelector(".drag-source");
+  if (source && !dinoColocado) {
+    zone.appendChild(source);
+    dinoColocado = true;
+  }
+});
+
+
 </script>
 
 
