@@ -31,20 +31,14 @@ CREATE TABLE administrador(
 
 CREATE TABLE partida_draftosaurus (
     ID_Partida INT AUTO_INCREMENT PRIMARY KEY,
-    Player1 INT NOT NULL,
-    Player2 INT,
-    Player3 INT,
-    Player4 INT,
-    Player5 INT,
-    jugador_ganador INT,
+    Player1 VARCHAR(30),
+    Player2 VARCHAR(30),
+    Player3 VARCHAR(30),
+    Player4 VARCHAR(30),
+    Player5 VARCHAR(30),
+    jugador_ganador VARCHAR(30),
     numero_jugadores INT NOT NULL,
-    estado VARCHAR(50) NOT NULL DEFAULT 'pendiente',
-    FOREIGN KEY (Player1) REFERENCES jugador(ID_Jugador),
-    FOREIGN KEY (Player2) REFERENCES jugador(ID_Jugador),
-    FOREIGN KEY (Player3) REFERENCES jugador(ID_Jugador),
-    FOREIGN KEY (Player4) REFERENCES jugador(ID_Jugador),
-    FOREIGN KEY (Player5) REFERENCES jugador(ID_Jugador),
-    FOREIGN KEY (jugador_ganador) REFERENCES jugador(ID_Jugador)
+    estado VARCHAR(50) NOT NULL DEFAULT 'pendiente'
 );
 
 CREATE TABLE tablero(

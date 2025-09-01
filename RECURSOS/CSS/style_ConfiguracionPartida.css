@@ -6,7 +6,7 @@
   -webkit-backdrop-filter: blur(10px);
   padding: 40px;
   justify-content: center;
-  margin: 12% auto 0 auto;
+  margin:0%  auto 0 auto;
   width: 20%;
   min-width: 280px;
   max-width: 400px;
@@ -16,6 +16,17 @@
   align-items: center;
   font-family: 'Ubuntu', sans-serif;
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.controls{
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 2px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 #cantidadJugadores {

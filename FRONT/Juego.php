@@ -250,7 +250,7 @@
   "region region-center dropzone": 60
 };
 
-zone.addEventListener("drop", e => {
+/*zone.addEventListener("drop", e => {
   e.preventDefault();
 
   const idZona = zone.classList[1]; // el nombre de la zona
@@ -268,7 +268,7 @@ zone.addEventListener("drop", e => {
     zone.appendChild(source);
     dinoColocado = true;
   }
-});
+});*/
 
 
 </script>

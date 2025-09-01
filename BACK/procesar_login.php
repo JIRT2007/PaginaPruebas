@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Usuario no registrado
         $error = "Debes registrarte antes de iniciar sesión.";
     }
-
+    echo $error;
     $stmt->close();
 }
 
