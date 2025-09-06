@@ -91,8 +91,12 @@ function habilitarNombres() {
     document.getElementById(ids[i]).disabled = false;
   }
 
-  // Habilita el botón JUGAR cuando haya selección
-  botonJugar.disabled = isNaN(cantidad);
+  // Guarda la cantidad para usarla en el juego
+  cantidadJugadoresPartida = cantidad;
+
+  // Habilita el botón JUGAR solo si la cantidad es válida
+  botonJugar.disabled = isNaN(cantidad) || cantidad < 1;
+
 }
 
 </script>

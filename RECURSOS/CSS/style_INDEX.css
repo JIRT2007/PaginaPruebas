@@ -78,13 +78,10 @@ html {
 }
 
 .logo {
-  width: 60vw;         /* Más grande y relativo al ancho de la ventana */
-  max-width: 70%;    /* Limita el tamaño máximo si la pantalla es muy grande */
+  max-width: 90%;  
   height: auto;
-  margin-top: 5%;      /* Menos margen arriba para que no quede tan abajo */
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 35%;
+ 
 }
 
 .logo:hover {
@@ -98,8 +95,6 @@ html {
   gap: 5%;
   
 }
-
-
 
 .DatosEmpresa{
   display: flex;
@@ -137,9 +132,6 @@ html {
   font-family: 'Ubuntu', sans-serif;
   border: 1px solid rgba(255, 255, 255, 0.3); /* Borde tenue para dar profundidad */
 }
-
-
-
 
 .MapaUbicacion {
   width: 80%;

@@ -268,11 +268,8 @@
     zone.appendChild(source);
     dinoColocado = true;
   }
-});*/
-
-
-</script>
-
+}); */
+</script> 
 
 </body>
 </html>
