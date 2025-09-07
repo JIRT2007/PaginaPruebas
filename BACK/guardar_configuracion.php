@@ -32,6 +32,15 @@ if (
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssi", $player1, $player2, $player3, $player4, $player5, $num_jugadores);
+    
+
+    $_SESSION['jugadores'] = [
+        $_POST['Player1'],
+        $_POST['Player2'],
+        $_POST['Player3'],
+        $_POST['Player4'],
+        $_POST['Player5']
+    ];
 
     if ($stmt->execute()) {
         $id_partida = $stmt->insert_id; // ID de la nueva partida

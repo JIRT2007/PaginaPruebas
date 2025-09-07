@@ -1,4 +1,8 @@
-<?php include '../SEGURIDAD/proteccion.php';?> <!-- Incluye un archivo PHP para protección/autenticación -->
+<<?php
+include '../SEGURIDAD/proteccion.php';
+session_start();
+$jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +73,7 @@
     <div id="zona-dinos"></div> <!-- Aquí aparecen los dinos disponibles -->
     <br> 
     
-    <span id="turno-info" style="color:black; margin-left:10px;">Turno: 1</span>
+    <span id="turno-info" style="color:black; margin-left:10px;"> Turno: 1 - <?php echo isset($jugadores[0]) ? htmlspecialchars($jugadores[0]) : 'Jugador 1'; ?></span>
 
     <!-- Botón con un icono (ejemplo: tirar dado) -->
     <button class="Dado" onclick="alert('¡Botón presionado!')">
