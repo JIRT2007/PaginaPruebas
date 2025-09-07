@@ -62,7 +62,7 @@
     <div class="region region-center dropzone"></div>
   </div>
 
-  
+
 
   <!-- Zona para tomar dinosaurios y botones de control -->
   <div class="tab" id="TomaDinosaurios">
@@ -198,7 +198,7 @@
       });
     }
 
-    // Permitir soltar dinos en el tablero
+    // Permitir soltar dinos en el tablero 
     document.querySelectorAll(".dropzone").forEach(zone => {
       zone.addEventListener("dragover", e => {
         e.preventDefault();
@@ -216,11 +216,40 @@
         zone.style.backgroundColor = "transparent";
 
         const source = document.querySelector(".drag-source");
-        if (source && !dinoColocado) {
-          source.classList.remove("drag-source");
-          zone.appendChild(source);
-          dinoColocado = true; // marca que ya colocó su dino del turno
+        if (!source || dinoColocado) return;
+
+        const idZona = zone.classList[1]; // Ej: region-top-left
+        const imgs = Array.from(zone.querySelectorAll("img"));
+        const nuevoSrc = source.querySelector("img").src;
+
+        // Restricción para la zona solo iguales
+        if (idZona === "region-top-left" && imgs.length > 0) {
+          const primerSrc = imgs[0].src;
+          if (nuevoSrc !== primerSrc) {
+            alert("Solo puedes colocar dinosaurios del mismo tipo en esta zona.");
+            return;
+          }
         }
+
+        // Restricción para la zona solo diferentes
+        if (idZona === "region-middle-right") {
+          if (imgs.some(img => img.src === nuevoSrc)) {
+            alert("Solo puedes colocar dinosaurios diferentes en esta zona.");
+            return;
+          }
+        }
+
+        // Límite por zona
+        const limite = limitePorZona[zone.className] || 99;
+        if (imgs.length >= limite) {
+          alert("Este recinto alcanzó el límite de dinosaurios admitidos");
+          return;
+        }
+
+        // Si pasa las restricciones, coloca el dino
+        source.classList.remove("drag-source");
+        zone.appendChild(source);
+        dinoColocado = true;
       });
     });
 
@@ -250,25 +279,6 @@
   "region region-center dropzone": 60
 };
 
-/*zone.addEventListener("drop", e => {
-  e.preventDefault();
-
-  const idZona = zone.classList[1]; // el nombre de la zona
-  const cantidadActual = zone.querySelectorAll("img").length;
-  const limite = limitePorZona[idZona];
-
-  if (cantidadActual >= limite) {
-    alert("Este recinto ya está lleno de dinosaurios 🦖");
-    return; // no deja colocar más
-  }
-
-  // si todavía hay espacio, coloca el dino normalmente
-  const source = document.querySelector(".drag-source");
-  if (source && !dinoColocado) {
-    zone.appendChild(source);
-    dinoColocado = true;
-  }
-}); */
 </script> 
 
 </body>
