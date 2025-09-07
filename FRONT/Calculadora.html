@@ -251,6 +251,14 @@ dinos.forEach(dino => {
       agregarEventosArrastre(dinoDiv);
 
       zone.appendChild(dinoDiv);
+
+      // --- Guarda el tablero si ya tiene 12 dinos ---
+      const totalDinosDespues = Array.from(document.querySelectorAll(".dropzone img")).length;
+      if (totalDinosDespues >= 12) {
+        guardarTablero(turnoActual);
+        enviarTableroAJAX(turnoActual, tableros[turnoActual - 1]); // <--- Para la base de datos
+        alert("Completaste tu tablero jugador " + turnoActual + ", sigue con el siguiente jugador o termina la partida si ya no quedan");
+      }
     }
   });
 });
@@ -281,29 +289,7 @@ dinos.forEach(dino => {
   "region region-center dropzone": 60
 };
 
-zone.addEventListener("drop", e => {
-  e.preventDefault();
-
-  const idZona = zone.classList[1]; // el nombre de la zona
-  const cantidadActual = zone.querySelectorAll("img").length;
-  const limite = limitePorZona[idZona];
-
-  if (cantidadActual >= limite) {
-    alert("Este recinto ya está lleno de dinosaurios 🦖");
-    return; // no deja colocar más
-  }
-
-  // si todavía hay espacio, coloca el dino normalmente
-  const source = document.querySelector(".drag-source");
-  if (source && !dinoColocado) {
-    zone.appendChild(source);
-    dinoColocado = true;
-  }
-});
-
-
 </script>
-
 
 </body>
 </html>
