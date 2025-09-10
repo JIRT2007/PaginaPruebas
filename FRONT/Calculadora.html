@@ -42,8 +42,6 @@
       transform: scale(1.1);
     }
 
-
-
   </style>
 </head>
 
@@ -121,9 +119,26 @@
     // Agrega eventos de arrastre a un dino
     function agregarEventosArrastre(elem) {
   elem.addEventListener("dragstart", e => {
-    // Guarda la imagen del dino que se arrastra
     e.dataTransfer.setData("dino-img", elem.querySelector("img").src);
-    e.dataTransfer.effectAllowed = "copy";
+    e.dataTransfer.setData("origen-id", elem.parentElement.className);
+    e.dataTransfer.effectAllowed = "move";
+  });
+
+  // Eliminar con click derecho
+  elem.addEventListener("contextmenu", e => {
+    e.preventDefault();
+    elem.remove();
+  });
+
+  // Detectar doble toque (móvil)
+  let lastTap = 0;
+  elem.addEventListener("touchstart", e => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    if (tapLength < 300 && tapLength > 0) { // 300ms = doble tap
+      elem.remove();
+    }
+    lastTap = currentTime;
   });
 }
 
