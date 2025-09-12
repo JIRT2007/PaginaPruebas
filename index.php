@@ -37,8 +37,14 @@
     <i class="fa-regular fa-book"></i> Reglamento
   </button>
 
+  <button class="BotonRedireccion03" onclick="window.location.href='FRONT/Registro.php'">
+    <i class="fa-regular fa-book"></i> Registrarse 
+  </button>
 
-  <input class="BotonRedireccion03" type="button" value="Registrarse" onclick="window.location.href='FRONT/Registro.php'" />
+    <button class="BotonRedireccion03" onclick="window.location.href='FRONT/login_administrador.php'">
+    <i class="fa-regular fa-book"></i> Login Administrador 
+  </button>
+
 </div>
 
 <script>

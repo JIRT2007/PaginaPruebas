@@ -13,11 +13,18 @@ CREATE TABLE jugador(
     FOREIGN KEY (ID_UsuarioJugador) REFERENCES usuario (ID_Usuario)
 );
 
-CREATE TABLE administrador(
+CREATE TABLE administrador (
     ID_Admin INT AUTO_INCREMENT PRIMARY KEY,
-    ID_UsuarioAdmin INT NOT NULL,
-    FOREIGN KEY (ID_UsuarioAdmin) REFERENCES usuario (ID_Usuario) 
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(70) NOT NULL
 );
+
+
+-- CREATE TABLE administrador(
+--     ID_Admin INT AUTO_INCREMENT PRIMARY KEY,
+--     ID_UsuarioAdmin INT NOT NULL,
+--     FOREIGN KEY (ID_UsuarioAdmin) REFERENCES usuario (ID_Usuario) 
+-- );
 
 -- CREATE TABLE partida_draftosaurus (
 --     ID_Partida INT AUTO_INCREMENT PRIMARY KEY,

@@ -1,14 +1,16 @@
-INSERT INTO usuario (nombre, password)
-VALUES
-('I.Grassi','1234'),('J.Rios','1434'),('F.Sclavi','1234'),('R.Pelaez','1234');
+INSERT INTO usuario (nombre, password) VALUES
+('I.Grassi','$2y$10$M6/7E1fVbYgVbT.csmJjruuV6zF7Q02uZgByU2NfP3n9B8rQ7L5v2'),
+('J.Rios','$2y$10$U4BB8xWfA7Hn16TknQdQwOs2sN6xPzXMTL.tTQgwJzj0hPQ0hB0Lu'),
+('F.Sclavi','$2y$10$M6/7E1fVbYgVbT.csmJjruuV6zF7Q02uZgByU2NfP3n9B8rQ7L5v2'),
+('R.Pelaez','$2y$10$M6/7E1fVbYgVbT.csmJjruuV6zF7Q02uZgByU2NfP3n9B8rQ7L5v2');
 
 INSERT INTO jugador (ID_UsuarioJugador)
 VALUES
 (1),(2),(3),(4);
 
-INSERT INTO administrador (ID_UsuarioAdmin)
-VALUES
-(1),(2);
+INSERT INTO administrador (Nombre, Password) 
+VALUES ('BrontoADMINISTRADOR', 'SecureADMINbgs2025');
+
 
 INSERT INTO partida_draftosaurus (Player1, Player2, Player3, Player4, jugador_ganador, numero_jugadores, estado)
 VALUES
