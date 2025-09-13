@@ -1,6 +1,10 @@
-<<?php
+<?php
 include '../SEGURIDAD/proteccion.php';
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
 ?>
 
