@@ -1,19 +1,107 @@
-body{font-family: 'Ubuntu', sans-serif;}
+body {
+  font-family: 'Ubuntu', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
 
+.Salir {
+  background-color: rgb(110, 110, 110);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 250px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  margin-top: 3%;
+}
+
+.Salir:hover {
+  background-color: #5f5f5f;
+  transform: scale(1.02);
+}
+
+/* Panel Admin */
 .PanelAdmin {
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 10%;
+  padding: 2rem;
   justify-content: center;
-  width: 20%;
+  max-width: 800px;
+  width: 90%;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
   align-items: center;
-  font-family: 'Ubuntu', sans-serif;
+  margin: 2rem auto;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 1% auto 0 auto;
 }
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+table tr.PanelControl_1 {
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+table th,
+table td {
+  padding: 0.8rem;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.08);
+}
+table tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .PanelAdmin {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .PanelAdmin h1 {
+    font-size: 1.5rem;
+  }
+  .PanelAdmin p {
+    font-size: 0.9rem;
+  }
+  table {
+    font-size: 0.85rem;
+  }
+  table th, table td {
+    padding: 0.6rem;
+  }
+}
+
+

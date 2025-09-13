@@ -80,6 +80,10 @@
 Mezclamos lo moderno de los videojuegos y experiencias recreativas, con el universo prehistórico de los dinosaurios.
 Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cretacico. Nos basamos en el Brontosaurus para el nombre y logo de nuestra empresa, buscando generar impacto e impresión, buscamos dejar una huella, tal como este lo haría en sus épocas, por ello fue apodado como “Lagarto trueno”.
 
+<div class="isotipoEmpresa">
+  <img src="RECURSOS/IMAGENES/isotipo.png" alt="Logo" class="isotipo"><img/>
+</div>
+
  <div class="MapaUbicacion">
   <iframe 
     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3272.4355440479853!2d-56.1093717!3d-34.89551790000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x959f86cbe884e9ef%3A0x7d674cc9bf7f571b!2sRbla.%20Rep%C3%BAblica%20de%20Chile%204607%2C%2011400%20Montevideo%2C%20Departamento%20de%20Montevideo!5e0!3m2!1ses-419!2suy!4v1752874704963!5m2!1ses-419!2suy" 

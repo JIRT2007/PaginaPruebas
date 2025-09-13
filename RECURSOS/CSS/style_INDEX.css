@@ -272,3 +272,11 @@ html {
     .logoIG:hover {
       transform: scale(1.1); 
     }
+
+    .isotipo{
+      width: 25%;
+      height: auto;
+      margin-top: 5%;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }

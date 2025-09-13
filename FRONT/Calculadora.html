@@ -82,228 +82,219 @@
     </button>
   </div>
 
+
+
+  
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a elementos HTML
-    const dinosContainer = document.getElementById('zona-dinos');
-    const btnCambiarTurno = document.getElementById('btn-cambiar-turno');
-    const turnoInfo = document.getElementById('turno-info');
+  document.addEventListener("DOMContentLoaded", () => {
+    // --- Constantes y variables globales ---
+    const dinosContainer = document.getElementById("zona-dinos");
+    const btnCambiarTurno = document.getElementById("btn-cambiar-turno");
+    const turnoInfo = document.getElementById("turno-info");
 
-    const maxJugadores = 4; // cantidad máxima de jugadores
-    let turnoActual = 1;    // empieza en el turno 1
-    let dinoColocado = false; // controla si ya puso un dino en el turno
+    const maxJugadores = 4;
+    let turnoActual = 1;
+    let dinoColocado = false;
 
-    // Estructura para guardar los tableros de cada jugador
-    let tableros = Array.from({ length: maxJugadores }, () => {
-      return {
-        "region-top-left": [],
-        "region-top-right": [],
-        "region-middle-left": [],
-        "region-middle-right": [],
-        "region-bottom-left": [],
-        "region-bottom-right": [],
-        "region-center": []
-      };
-    });
+    // Tableros de cada jugador: cada jugador tiene un objeto con las regiones
+    let tableros = Array.from({ length: maxJugadores }, () => ({
+      "region-top-left": [],
+      "region-top-right": [],
+      "region-middle-left": [],
+      "region-middle-right": [],
+      "region-bottom-left": [],
+      "region-bottom-right": [],
+      "region-center": []
+    }));
 
-    // Lista de imágenes de los dinosaurios disponibles
-    const imagenesDinos = [
-      "../RECURSOS/IMAGENES/DinoRojoSprite.png",
-      "../RECURSOS/IMAGENES/DinoAzulSprite.png",
-      "../RECURSOS/IMAGENES/DinoAmarilloSprite.png",
-      "../RECURSOS/IMAGENES/DinoNaranjaSprite.png",
-      "../RECURSOS/IMAGENES/DinoVerdeSprite.png",
-      "../RECURSOS/IMAGENES/DinoVioletaSprite.png"
+    // Lista de dinosaurios disponibles (nombre e imagen)
+    const dinos = [
+      { nombre: "T-Rex", img: "DinoRojoSprite.png" },
+      { nombre: "Triceratops", img: "DinoAmarilloSprite.png" },
+      { nombre: "Stegosaurus", img: "DinoVerdeSprite.png" },
+      { nombre: "Velociraptor", img: "DinoVioletaSprite.png" },
+      { nombre: "Brachiosaurus", img: "DinoAzulSprite.png" },
+      { nombre: "Ankylosaurus", img: "DinoNaranjaSprite.png" }
     ];
 
-    // Agrega eventos de arrastre a un dino
+    // Límite de dinosaurios por zona del tablero
+    const limitePorZona = {
+      "region region-top-left dropzone": 6,
+      "region region-top-right dropzone": 1,
+      "region region-middle-left dropzone": 3,
+      "region region-middle-right dropzone": 6,
+      "region region-bottom-left dropzone": 12,
+      "region region-bottom-right dropzone": 1,
+      "region region-center dropzone": 60
+    };
+
+    // --- Funciones ---
+
+    /**
+     * Agrega eventos de arrastre y eliminación a un dinosaurio.
+     * Permite arrastrar, eliminar con clic derecho y doble toque.
+     * @param {HTMLElement} elem - Elemento dinosaurio.
+     */
     function agregarEventosArrastre(elem) {
-  elem.addEventListener("dragstart", e => {
-    e.dataTransfer.setData("dino-img", elem.querySelector("img").src);
-    e.dataTransfer.setData("origen-id", elem.parentElement.className);
-    e.dataTransfer.effectAllowed = "move";
-  });
+      elem.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("dino-img", elem.querySelector("img").src);
+        e.dataTransfer.effectAllowed = "move";
+      });
 
-  // Eliminar con click derecho
-  elem.addEventListener("contextmenu", e => {
-    e.preventDefault();
-    elem.remove();
-  });
+      // Elimina el dinosaurio con clic derecho
+      elem.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        elem.remove();
+      });
 
-  // Detectar doble toque (móvil)
-  let lastTap = 0;
-  elem.addEventListener("touchstart", e => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-    if (tapLength < 300 && tapLength > 0) { // 300ms = doble tap
-      elem.remove();
+      // Elimina el dinosaurio con doble toque (móvil)
+      let lastTap = 0;
+      elem.addEventListener("touchstart", () => {
+        const currentTime = new Date().getTime();
+        if (currentTime - lastTap < 300) {
+          elem.remove();
+        }
+        lastTap = currentTime;
+      });
     }
-    lastTap = currentTime;
-  });
-}
 
-   const dinos = [
-  { nombre: "T-Rex", img: "DinoRojoSprite.png" },
-  { nombre: "Triceratops", img: "DinoAmarilloSprite.png" },
-  { nombre: "Stegosaurus", img: "DinoVerdeSprite.png" },
-  { nombre: "Velociraptor", img: "DinoVioletaSprite.png" },
-  { nombre: "Brachiosaurus", img: "DinoAzulSprite.png" },
-  { nombre: "Ankylosaurus", img: "DinoNaranjaSprite.png" }
-];
+    /**
+     * Genera un set inicial de dinosaurios (uno de cada tipo).
+     * Los muestra en la zona de toma.
+     */
+    function generarDinos() {
+      dinosContainer.innerHTML = "";
+      dinos.forEach((dino) => {
+        const dinoDiv = document.createElement("div");
+        dinoDiv.className = "draggable";
+        dinoDiv.draggable = true;
+        dinoDiv.innerHTML = `<img src="../RECURSOS/IMAGENES/${dino.img}" alt="${dino.nombre}">`;
+        agregarEventosArrastre(dinoDiv);
+        dinosContainer.appendChild(dinoDiv);
+      });
+      dinoColocado = false;
+    }
 
-// Selecciona el contenedor donde van los dinosaurios
-const zonaDinos = document.getElementById('zona-dinos');
-zonaDinos.innerHTML = ""; // Limpia el contenedor
-
-// Crea y agrega uno de cada dinosaurio
-dinos.forEach(dino => {
-  const dinoDiv = document.createElement('div');
-  dinoDiv.className = 'draggable';
-  dinoDiv.draggable = true; // HACE QUE SEA ARRASTRABLE
-  dinoDiv.innerHTML = `<img src="../RECURSOS/IMAGENES/${dino.img}" alt="${dino.nombre}">`;
-  agregarEventosArrastre(dinoDiv); // AGREGA LOS EVENTOS DE ARRASTRE
-  zonaDinos.appendChild(dinoDiv);
-});
-
-    // Guarda el tablero actual del jugador
+    /**
+     * Guarda el estado actual del tablero del jugador.
+     * @param {number} jugador - Número de jugador (1-indexado).
+     */
     function guardarTablero(jugador) {
-      document.querySelectorAll(".dropzone").forEach(zone => {
+      document.querySelectorAll(".dropzone").forEach((zone) => {
         const id = zone.classList[1];
         const dinos = [];
-        zone.querySelectorAll("img").forEach(img => {
-          dinos.push(img.src);
-        });
+        zone.querySelectorAll("img").forEach((img) => dinos.push(img.src));
         tableros[jugador - 1][id] = dinos;
       });
     }
 
-    // Carga el tablero guardado de un jugador
+    /**
+     * Carga el tablero guardado del jugador actual.
+     * @param {number} jugador - Número de jugador (1-indexado).
+     */
     function cargarTablero(jugador) {
-      document.querySelectorAll(".dropzone").forEach(zone => {
+      document.querySelectorAll(".dropzone").forEach((zone) => {
         const id = zone.classList[1];
         zone.innerHTML = "";
-        tableros[jugador - 1][id].forEach(src => {
-          const dinoDiv = document.createElement('div');
-          dinoDiv.classList.add('draggable');
+        tableros[jugador - 1][id].forEach((src) => {
+          const dinoDiv = document.createElement("div");
+          dinoDiv.className = "draggable";
           dinoDiv.draggable = true;
-
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = "Dino";
-
-          dinoDiv.appendChild(img);
-          zone.appendChild(dinoDiv);
-
+          dinoDiv.innerHTML = `<img src="${src}" alt="Dino">`;
           agregarEventosArrastre(dinoDiv);
+          zone.appendChild(dinoDiv);
         });
       });
     }
 
-    // Permitir soltar dinos en el tablero
-  document.querySelectorAll(".dropzone").forEach(zone => {
-  zone.addEventListener("dragover", e => {
-    e.preventDefault();
-    zone.style.backgroundColor = "rgba(255,255,255,0.1)";
-  });
+    // --- Eventos en zonas ---
+    // Permite soltar dinosaurios en las regiones del tablero
+    document.querySelectorAll(".dropzone").forEach((zone) => {
+      zone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        zone.style.backgroundColor = "rgba(255,255,255,0.1)";
+      });
 
-  zone.addEventListener("dragleave", () => {
-    zone.style.backgroundColor = "transparent";
-  });
+      zone.addEventListener("dragleave", () => {
+        zone.style.backgroundColor = "transparent";
+      });
 
-  zone.addEventListener("drop", e => {
-    e.preventDefault();
-    zone.style.backgroundColor = "transparent";
+      zone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        zone.style.backgroundColor = "transparent";
 
-    // Límite total por tablero
-    const totalDinos = Array.from(document.querySelectorAll(".dropzone img")).length;
-    if (totalDinos >= 12) {
-      alert("El tablero ya cuenta con el limite de 12 dinosaurios");
-      return;
-    }
+        // Límite total de dinosaurios en el tablero
+        const totalDinos = document.querySelectorAll(".dropzone img").length;
+        if (totalDinos >= 12) {
+          alert("El tablero ya cuenta con el límite de 12 dinosaurios");
+          return;
+        }
 
-    // Obtiene la imagen del dino arrastrado
-    const dinoImg = e.dataTransfer.getData("dino-img");
-    if (dinoImg) {
-      // Verifica el límite por zona
-      const idZona = zone.className;
-      const limite = limitePorZona[idZona];
-      const cantidadActual = zone.querySelectorAll("img").length;
+        const dinoImg = e.dataTransfer.getData("dino-img");
+        if (dinoImg) {
+          const idZona = zone.className;
+          const limite = limitePorZona[idZona];
+          const cantidadActual = zone.querySelectorAll("img").length;
 
-      if (cantidadActual >= limite) {
-        alert("Este recinto alcanzó el límite de dinosaurios admitidos");
-        return;
-      }
-
-      // --- Restricción para region solo dinosaurios iguales ---
-      if (zone.classList.contains("region-top-left")) {
-        const imgs = zone.querySelectorAll("img");
-        if (imgs.length > 0) {
-          const srcExistente = imgs[0].src;
-          if (srcExistente !== dinoImg) {
-            alert("Solo puedes colocar dinosaurios del mismo tipo en esta zona");
+          if (cantidadActual >= limite) {
+            alert("Este recinto alcanzó el límite de dinosaurios admitidos");
             return;
           }
-        }
-      }
 
-      // --- Restricción para region solo dinosaurios diferentes ---
-      if (zone.classList.contains("region-middle-right")) {
-        const imgs = zone.querySelectorAll("img");
-        for (let img of imgs) {
-          if (img.src === dinoImg) {
-            alert("Solo puedes colocar dinosaurios diferentes en esta zona");
-            return;
+          // Restricción: solo dinos del mismo tipo en region-top-left
+          if (zone.classList.contains("region-top-left")) {
+            const imgs = zone.querySelectorAll("img");
+            if (imgs.length > 0 && imgs[0].src !== dinoImg) {
+              alert("Solo puedes colocar dinosaurios del mismo tipo en esta zona");
+              return;
+            }
+          }
+
+          // Restricción: solo dinos diferentes en region-middle-right
+          if (zone.classList.contains("region-middle-right")) {
+            const imgs = zone.querySelectorAll("img");
+            if (Array.from(imgs).some((img) => img.src === dinoImg)) {
+              alert("Solo puedes colocar dinosaurios diferentes en esta zona");
+              return;
+            }
+          }
+
+          // Crear clon del dinosaurio y agregarlo a la zona
+          const dinoDiv = document.createElement("div");
+          dinoDiv.className = "draggable";
+          dinoDiv.draggable = true;
+          dinoDiv.innerHTML = `<img src="${dinoImg}" alt="Dino">`;
+          agregarEventosArrastre(dinoDiv);
+
+          zone.appendChild(dinoDiv);
+
+          // Si ya se llenó el tablero, guarda y avisa
+          const totalDinosDespues = document.querySelectorAll(".dropzone img").length;
+          if (totalDinosDespues >= 12) {
+            guardarTablero(turnoActual);
+            alert(`Completaste tu tablero jugador ${turnoActual}, sigue con el siguiente jugador.`);
           }
         }
-      }
-
-      // Crea un "clon" del dino
-      const dinoDiv = document.createElement('div');
-      dinoDiv.className = 'draggable';
-      dinoDiv.draggable = true;
-      dinoDiv.innerHTML = `<img src="${dinoImg}" alt="Dino">`;
-      agregarEventosArrastre(dinoDiv);
-
-      zone.appendChild(dinoDiv);
-
-      // --- Guarda el tablero si ya tiene 12 dinos ---
-      const totalDinosDespues = Array.from(document.querySelectorAll(".dropzone img")).length;
-      if (totalDinosDespues >= 12) {
-        guardarTablero(turnoActual);
-        enviarTableroAJAX(turnoActual, tableros[turnoActual - 1]); // <--- Para la base de datos
-        alert("Completaste tu tablero jugador " + turnoActual + ", sigue con el siguiente jugador o termina la partida si ya no quedan");
-      }
-    }
-  });
-});
-
-    // --- Cambiar de turno ---
-    btnCambiarTurno.addEventListener('click', () => {
-      guardarTablero(turnoActual);
-
-      turnoActual = turnoActual + 1;
-      turnoInfo.textContent = `Tablero del jugador: ${turnoActual}`;
-
-      cargarTablero(turnoActual);
-      generarDinos(); // genera automáticamente para el nuevo turno
+      });
     });
 
-    // Genera dinos al iniciar la partida automáticamente
+    /**
+     * Cambia el turno al siguiente jugador.
+     * Guarda el tablero actual y carga el siguiente.
+     */
+    btnCambiarTurno.addEventListener("click", () => {
+      guardarTablero(turnoActual);
+      turnoActual = turnoActual + 1;
+      turnoInfo.textContent = `Tablero del jugador: ${turnoActual}`;
+      cargarTablero(turnoActual);
+      generarDinos();
+    });
+
+    // --- Inicio ---
     generarDinos();
   });
-
-  //Cantidad de dinos por recinto
-  const limitePorZona = {
-  "region region-top-left dropzone": 6,
-  "region region-top-right dropzone": 1,
-  "region region-middle-left dropzone": 3,
-  "region region-middle-right dropzone": 6,
-  "region region-bottom-left dropzone": 12,
-  "region region-bottom-right dropzone": 1,
-  "region region-center dropzone": 60
-};
-
 </script>
+
 
 </body>
 </html>

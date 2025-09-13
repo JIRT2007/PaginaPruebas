@@ -56,21 +56,28 @@ $result = mysqli_query($con, $sql);
         
         <h2>Usuarios Registrados</h2>
         <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
+            <tr class="PanelControl_1">
+                <th>ID_USER</th>
+                <th>NAME_USER</th>
+                <th>ACTION</th>
             </tr>
+
             <?php while ($row = mysqli_fetch_assoc($result)) { ?>
             <tr>
                 <td><?php echo $row['ID_Usuario']; ?></td>
                 <td><?php echo htmlspecialchars($row['nombre']); ?></td>
                 <td>
-                    <a href="Administrador.php?eliminar=<?php echo $row['ID_Usuario']; ?>" onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">Eliminar</a>
+                    <a href="Administrador.php?eliminar=<?php echo $row['ID_Usuario']; ?>" onclick="return confirm('Deseas eliminar este user?');">DELETE USER</a>
                 </td>
             </tr>
             <?php } ?>
         </table>
+
+            <button class="Salir"  onclick="window.location.href='../BACK/logout.php'">
+      <label>Volver al inicio</label>
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
     </div>
 </body>
 </html>
