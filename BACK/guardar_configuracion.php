@@ -3,6 +3,8 @@ include '../SEGURIDAD/proteccion.php';
 session_start();
 
 // Conexión a la BD
+
+ 
 $servername = "localhost";
 $username = "root";
 $password = "";
