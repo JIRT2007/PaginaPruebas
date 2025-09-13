@@ -5,7 +5,7 @@ session_start();
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'Draftosaurus';
+$database = 'draftosaurus';
 
 try {
     // Primero conectar sin especificar la base de datos para poder crearla
