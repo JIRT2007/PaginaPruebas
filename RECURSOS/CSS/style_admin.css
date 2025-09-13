@@ -6,7 +6,7 @@ body{font-family: 'Ubuntu', sans-serif;}
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 20%;
+  padding: 10%;
   justify-content: center;
   width: 20%;
   border-radius: 12px;

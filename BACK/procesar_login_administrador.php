@@ -1,10 +1,8 @@
 <?php
 session_start();
-
-// Conexión a la base de datos (localhost)
 $servername = "localhost";
-$username   = "root";       // tu usuario de MySQL
-$password   = "";           // tu contraseña de MySQL (XAMPP suele ser "")
+$username   = "root";       
+$password   = "";           
 $database   = "draftosaurus";
 
 // Crear conexión

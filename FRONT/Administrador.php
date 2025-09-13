@@ -1,3 +1,37 @@
+<?php
+session_start();
+
+// Verifica si el admin está logueado
+if (!isset($_SESSION['admin'])) {
+    header("Location: login_administrador.php");
+    exit();
+}
+
+$servername = "localhost";
+$username   = "root";       
+$password   = "";           
+$database   = "draftosaurus";
+
+// Conexión directa
+$con = mysqli_connect($servername, $username, $password, $database);
+if (!$con) {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+
+// Eliminar usuario si se recibe el parámetro
+if (isset($_GET['eliminar'])) {
+    $id = intval($_GET['eliminar']);
+    $sql = "DELETE FROM usuario WHERE ID_Usuario = $id";
+    mysqli_query($con, $sql);
+    header("Location: Administrador.php");
+    exit();
+}
+
+// Obtener todos los usuarios
+$sql = "SELECT ID_Usuario, nombre FROM usuario";
+$result = mysqli_query($con, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +39,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../RECURSOS/CSS/style_admin.css">
     <title>Administrador</title>
-        <style>
+    <style>
         body {
             background-image: url('../RECURSOS/IMAGENES/WallpaperAdmin.png');
             background-size: cover;
@@ -19,7 +53,24 @@
     <div class="PanelAdmin">
         <h1>Panel de Administrador</h1>
         <p>Bienvenido, administrador. Aquí puedes gestionar el sistema.</p>
-        <!-- Aquí puedes agregar más funcionalidades para el administrador -->
+        
+        <h2>Usuarios Registrados</h2>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+            <tr>
+                <td><?php echo $row['ID_Usuario']; ?></td>
+                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                <td>
+                    <a href="Administrador.php?eliminar=<?php echo $row['ID_Usuario']; ?>" onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">Eliminar</a>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
     </div>
 </body>
 </html>
