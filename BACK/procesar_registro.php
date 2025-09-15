@@ -3,11 +3,17 @@ session_start();
 
 // Configuración de la base de datos
 
-$hostname = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'draftosaurus';
+/*
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$database = "draftosaurus";
+*/
 
+$hostname = "192.168.1.50";
+$username = "bd-manager";
+$password = "mBdi4#32";
+$database = "draftosaurus";
 
 try {
     // Primero conectar sin especificar la base de datos para poder crearla
