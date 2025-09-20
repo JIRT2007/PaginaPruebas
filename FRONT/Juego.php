@@ -80,7 +80,7 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
     <span id="turno-info" style="color:black; margin-left:10px;"> Turno: 1 - <?php echo isset($jugadores[0]) ? htmlspecialchars($jugadores[0]) : 'Jugador 1'; ?></span>
 
     <!-- Botón con un icono (ejemplo: tirar dado) -->
-    <button class="Dado" onclick="alert('¡Botón presionado!')">
+    <button class="Dado">
       <i class="fa-solid fa-dice"></i>
     </button>
 
@@ -89,9 +89,6 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
       <i class="fa-solid fa-users"></i>
     </button>
    
-
-
-
     <!-- Botón para regresar (logout) -->
     <button class="Salir"  onclick="window.location.href='../BACK/logout.php'">
       <i class="fa-solid fa-right-from-bracket"></i>
@@ -284,6 +281,15 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
         source.classList.remove("drag-source");
         zone.appendChild(source);
         dinoColocado = true;
+
+        if (restriccionActual) {
+  const valido = validadores[restriccionActual](idZona, imgs);
+  if (!valido) {
+    alert("No puedes colocar aquí: " + restriccionActual);
+    return;
+  }
+}
+
       });
     });
 
@@ -302,8 +308,40 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
     // --- Inicio de partida ---
     generarDinos();
   });
-</script>
 
+  // 🎲 Caras del dado
+const restriccionesDado = [
+  "Zona izquierda del parque",  
+  "Zona derecha del parque",    
+  "Zona boscosa",               
+  "Zona rocosa",                
+  "Recinto vacío",
+  "Recinto sin T-Rex"
+];
+
+let restriccionActual = null;
+
+//Función para tirar dado
+function tirarDado() {
+  const randomIndex = Math.floor(Math.random() * restriccionesDado.length);
+  restriccionActual = restriccionesDado[randomIndex];
+  alert("Restricción del turno: " + restriccionActual);
+}
+
+//Validadores de restricción
+const validadores = {
+  "Zona izquierda del parque": (zona, imgs) => zona.includes("left"),
+  "Zona derecha del parque":  (zona, imgs) => zona.includes("right"),
+  "Zona boscosa":             (zona, imgs) => zona === "region-top-left",
+  "Zona rocosa":              (zona, imgs) => zona === "region-bottom-right",
+  "Recinto vacío":            (zona, imgs) => imgs.length === 0,
+  "Recinto sin T-Rex":        (zona, imgs) => !imgs.some(img => img.src.includes("DinoRojoSprite.png"))
+};
+
+//Asignar botón del dado
+document.querySelector(".Dado").addEventListener("click", tirarDado);
+
+</script>
 
 </body>
 </html>

@@ -7,17 +7,18 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 
-/*
+
 $hostname = "localhost";
 $username = "root";
 $password = "";
 $database = "draftosaurus";
-*/
 
+/*
 $hostname = "192.168.1.50";
 $username = "bd-manager";
 $password = "mBdi4#32";
 $database = "draftosaurus";
+*/
 
 // Conexión directa
 $con = mysqli_connect($servername, $username, $password, $database);

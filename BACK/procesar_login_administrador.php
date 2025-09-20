@@ -1,17 +1,18 @@
 <?php
 session_start();
 
-/*
+
 $hostname = "localhost";
 $username = "root";
 $password = "";
 $database = "draftosaurus";
-*/
 
+/*
 $hostname = "192.168.1.50";
 $username = "bd-manager";
 $password = "mBdi4#32";
 $database = "draftosaurus";
+*/
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $database);
