@@ -21,7 +21,7 @@ $database = "draftosaurus";
 */
 
 // Conexión directa
-$con = mysqli_connect($servername, $username, $password, $database);
+$con = mysqli_connect($hostname, $username, $password, $database);
 if (!$con) {
     die("Error de conexión: " . mysqli_connect_error());
 }
