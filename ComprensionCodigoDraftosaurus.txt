@@ -1,0 +1,232 @@
+### Inicializacion de la partida ###
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dinosContainer = document.getElementById("zona-dinos");
+  const btnCambiarTurno = document.getElementById("btn-cambiar-turno");
+  const turnoInfo = document.getElementById("turno-info");
+
+  const maxJugadores = 5;
+  let turnoActual = 1;
+  let dinoColocado = false;
+
+#1- Este fragmento es el encargado de guardar referencias de elementos importantes tras que cargue la pagina.
+#2- Se define un maximo de 5 jugadores e inicia desde el turno N°1,
+#3- El fragmento de codigo " let dinoColocado = false; " es el encargado de indicar si ya se jugo un dinosaurio en ese turno.
+
+### Tableros por jugador ###
+
+let tableros = Array.from({ length: maxJugadores }, () => ({
+    "region-top-left": [],
+    "region-top-right": [],
+    "region-middle-left": [],
+    "region-middle-right": [],
+    "region-bottom-left": [],
+    "region-bottom-right": [],
+    "region-center": []
+}));
+
+#1- Cada jugador tiene un objeto con arreglos (Arrays), que guardan que dinosaurios se tiene en cada region. 
+
+### Dinosaurios disponibles ###
+
+const imagenesDinos = [
+   "../RECURSOS/IMAGENES/DinoRojoSprite.png",
+   "../RECURSOS/IMAGENES/DinoAzulSprite.png",
+   "../RECURSOS/IMAGENES/DinoAmarilloSprite.png",
+   "../RECURSOS/IMAGENES/DinoNaranjaSprite.png",
+   "../RECURSOS/IMAGENES/DinoVerdeSprite.png",
+   "../RECURSOS/IMAGENES/DinoVioletaSprite.png"
+];
+
+#1- Lista las imagenes de los dinosaurios.
+
+### Cantidades de colocacion por recinto ###
+
+const limitePorZona = {
+   "region region-top-left dropzone": 6,
+   "region region-top-right dropzone": 1,
+   "region region-middle-left dropzone": 3,
+   "region region-middle-right dropzone": 6,
+   "region region-bottom-left dropzone": 12,
+   "region region-bottom-right dropzone": 1,
+   "region region-center dropzone": 60
+};
+
+#1- Determina el maximo de jugadores que estan permitidos por cada recinto.
+
+agregarEventosArraste(elem)
+
+dragstart
+#1- El fragmento es el encargado de guardar el HTML del dinosaurios que se arrastra.
+dragend
+#2- El fragmento limpia la clase de "arrastrando".
+
+generarDinos()
+
+#1- Es el encargado de vaciar la zona de dinosaurios y generar 6 nuevo de forma aleatoria.
+#2- Tambien los hace arrastrables y reinicia " dinoColocado ".
+
+guardarTablero(jugador)
+
+#1- Recorre cada dropzone y guarda las imagenes de los dinosaurios en tableros[jugador]
+
+cargarTablero(jugador)
+
+#1- Limpia todas las zonas e inserta los dinosaurios guardados para ese jugador.
+#2- Tambien les devuelve la funcionalidad de ser arrastrados.
+
+### Eventos en dropzones ###
+
+    document.querySelectorAll(".dropzone").forEach((zone) => {
+
+#1- Selecciona todas las zonas validas para soltar las piezas (regiones del tablero).
+#2- Se agregan tres eventos a cada zona:
+
+## dragover ##
+
+zone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  if (!dinoColocado) {
+    zone.style.backgroundColor = "rgba(255,255,255,0.1)";
+  }
+});
+
+#1- Este fragmento ocurre cuando el usuario opta por arrastrar un objeto sobre la zona.
+
+e.preventDefault() 
+#1.1- Es el fragmento de codigo que premite que el navegador acepte un drop en esa zona.
+
+if (!dinoColocado){...}
+#1.2- Si el jugador aun no coloco el dinosaurios en este turno, cambia el color del fondo de la zona para dar un feedback visual.
+
+## dragleave ##   
+
+zone.addEventListener("dragleave", () => {
+  zone.style.backgroundColor = "transparent";
+});
+
+#1- Ocurre cuando el objeto arrastrado sale de la zona.
+#2- Aqui se quita el efecto visual (restaura el fondo transparente).
+
+## drop ##
+
+zone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  zone.style.backgroundColor = "transparent";
+
+  const source = document.querySelector(".drag-source");
+  if (!source || dinoColocado) return;
+
+  const idZona = zone.classList[1];
+  const imgs = Array.from(zone.querySelectorAll("img"));
+  const nuevoSrc = source.querySelector("img").src;
+
+#1- Esto ocurre cuando sueltas el dinosaurio en la zona.
+
+e.preventDefault()
+#1.1- Fragmento encargado de habilitar el drop.
+
+zone.style.backgroundColor = "transparent"
+#1.2- Busca al dinosaurios que se estaba arrastrando (previamente marcado en dragstat con .drag-source).
+
+if (!source || dinoColocado) return;
+#1.3- Si no hay una colocacion valida o ya se coloco un dinosaurios, se cancela y bloquea la opcion de drag and drop.
+
+const idZona = zone.classList[1];
+#1.4- Obtiene el nombre logico del recinto.
+
+const imgs = Array.from(zone.querySelectorAll("img"));
+#1.5- Lista las imagenes que hay en la zona.
+
+const nuevoSrc = source.querySelector("img").src;
+#1.6- Ruta de la imagen del dinosaurio que se esta dropeando.
+
+## Condiciones de colocacion por recintos ##
+
+if (idZona === "region-top-left" && imgs.length > 0) {
+  if (nuevoSrc !== imgs[0].src) {
+    alert("Solo puedes colocar dinosaurios del mismo tipo en esta zona.");
+    return;
+  }
+}
+
+#1.1- Solo puedes colocar dinosaurios del mismo tipo en este recinto.
+
+if (idZona === "region-middle-right") {
+  if (imgs.some((img) => img.src === nuevoSrc)) {
+    alert("Solo puedes colocar dinosaurios diferentes en esta zona.");
+    return;
+  }
+}
+
+#1.2- No puedes colocar dinosaurios del mismo tipo.
+
+const limite = limitePorZona[zone.className] || 99;
+if (imgs.length >= limite) {
+  alert("Este recinto alcanzó el límite de dinosaurios admitidos");
+  return;
+}
+
+#1.3- Busca el limite definido por el objeto limitePorZona segun zone.className. Si ya hay demasiados dinosaurios, no deja colocar gracias a imgs.lenght >= limite.
+
+## Colocar el dinosaurio ## 
+
+source.classList.remove("drag-source");
+#1.1- Limpia la marca del dinosaurio arrastrado.
+zone.appendChild(source);
+#1.2- Mueve el elemento real desde la zona de dinosaurios hasta el recinto del tablero.
+dinoColocado = true;
+#1.3- Ya se coloco un dinosaurio en este turno, bloquea mas drops.
+
+### Cambio de turno ###
+
+btnCambiarTurno.addEventListener("click", () => {
+  guardarTablero(turnoActual);
+  turnoActual = (turnoActual % maxJugadores) + 1;
+  turnoInfo.textContent = `Turno: ${turnoActual}`;
+  cargarTablero(turnoActual);
+  generarDinos();
+});
+
+#1.1- Guarda el tablero del jugador actual.
+#1.2- Avanza al siguiente turno.
+#1.3- Actualiza el texto del turno.
+#1.4- Carga el tablero del nuevo jugador.
+#1.5- Genera dinosaurios nuevos.
+
+### Dados y restricciones ###
+
+const restriccionesDado = [
+  "Zona izquierda del parque",  
+  "Zona derecha del parque",    
+  "Zona boscosa",               
+  "Zona rocosa",                
+  "Recinto vacío",
+  "Recinto sin T-Rex"
+];
+let restriccionActual = null;
+
+#1- Lista las restricciones posibles.
+
+function tirarDado() {
+  const randomIndex = Math.floor(Math.random() * restriccionesDado.length);
+  restriccionActual = restriccionesDado[randomIndex];
+  alert("Restricción del turno: " + restriccionActual);
+}
+
+#1- Cuando se oprime el boton para lanzar el dado se elige de forma aleatoria un restriccion.
+
+const validadores = {
+  "Zona izquierda del parque": (zona, imgs) => zona.includes("left"),
+  "Zona derecha del parque":  (zona, imgs) => zona.includes("right"),
+  "Zona boscosa":             (zona, imgs) => zona === "region-top-left",
+  "Zona rocosa":              (zona, imgs) => zona === "region-bottom-right",
+  "Recinto vacío":            (zona, imgs) => imgs.length === 0,
+  "Recinto sin T-Rex":        (zona, imgs) => !imgs.some(img => img.src.includes("DinoRojoSprite.png"))
+};
+
+#1- Define las validaciones seguna la restriccion activa. 
+
+document.querySelector(".Dado").addEventListener("click", tirarDado);
+
+#1- Asigna el boton para lanzar el dado.

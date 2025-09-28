@@ -309,7 +309,7 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
     generarDinos();
   });
 
-  // 🎲 Caras del dado
+  //Caras del dado
 const restriccionesDado = [
   "Zona izquierda del parque",  
   "Zona derecha del parque",    
