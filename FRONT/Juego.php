@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const maxJugadores = nombresJugadores.length;
   let turnoActual    = 1;
   let dinoColocado   = false;
+  let jugadorActual = 1; // índice del jugador actual (1 a maxJugadores)
 
   // --- Estado de los tableros ---
   let tableros = Array.from({ length: maxJugadores }, () => ({
@@ -289,26 +290,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === Cambio de turno ===
   btnCambiarTurno.addEventListener("click", () => {
-    guardarTablero(turnoActual);
-    // Contar colocación en la ronda actual
-    colocacionesEnRonda++;
-    // Si todos los jugadores han colocado, tirar dado para la siguiente ronda y reiniciar contador
-    if (colocacionesEnRonda >= maxJugadores) {
-      tirarDado();
-      colocacionesEnRonda = 0;
+    guardarTablero(jugadorActual);
+
+    // Pasar al siguiente jugador
+    if (jugadorActual < maxJugadores) {
+      jugadorActual++;
+    } else {
+      // Si ya jugó el último jugador, reiniciamos al primero
+      // y aumentamos el número de ronda global
+      jugadorActual = 1;
+      turnoActual++;
+      if (turnoActual <= 6) {
+        tirarDado(); // Solo tirar dado si no terminó el juego
+      }
     }
-    turnoActual = (turnoActual % maxJugadores) + 1;
-    // Mostrar el nombre del jugador correspondiente
-    const nombre = nombresJugadores[turnoActual - 1] || `Jugador ${turnoActual}`;
+
+    // Si ya se completaron 6 rondas, terminar partida
+    if (turnoActual > 6) {
+      turnoInfo.textContent = "Fin de la partida. ¡Gracias por jugar!";
+      btnCambiarTurno.disabled = true;
+      return;
+    }
+
+    // Mostrar nombre y turno
+    const nombre = nombresJugadores[jugadorActual - 1] || `Jugador ${jugadorActual}`;
     turnoInfo.textContent = `Turno: ${turnoActual} - ${nombre}`;
-    cargarTablero(turnoActual);
+    cargarTablero(jugadorActual);
     generarDinos();
   });
 
   // Inicialización
   // Mostrar nombre correcto en el primer turno
-  const nombreInicial = nombresJugadores[0] || "Jugador 1";
-  turnoInfo.textContent = `Turno: 1 - ${nombreInicial}`;
+  turnoInfo.textContent = `Turno: 1 - ${nombresJugadores[0] || "Jugador 1"}`;
   generarDinos();
   tirarDado(); // Solo al inicio
 });
