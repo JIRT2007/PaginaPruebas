@@ -5,7 +5,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
+// Obtener nombres de jugadores y filtrar vacíos
+$jugadores = isset($_SESSION['jugadores']) ? array_filter($_SESSION['jugadores'], function($j) { return !empty($j); }) : [];
+$jugadores = array_values($jugadores); // Reindexar
+$maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
 ?>
 
 <!DOCTYPE html>
@@ -78,11 +81,14 @@ $jugadores = isset($_SESSION['jugadores']) ? $_SESSION['jugadores'] : [];
     <br> 
     
     <span id="turno-info" style="color:black; margin-left:10px;"> Turno: 1 - <?php echo isset($jugadores[0]) ? htmlspecialchars($jugadores[0]) : 'Jugador 1'; ?></span>
+    <script>
+      // Pasar los nombres de los jugadores y cantidad al JS
+      window.nombresJugadores = <?php echo json_encode($jugadores); ?>;
+    </script>
 
-    <!-- Botón con un icono (ejemplo: tirar dado) -->
-    <button class="Dado">
-      <i class="fa-solid fa-dice"></i>
-    </button>
+
+    <!-- Mostrar restricción activa del dado -->
+    <div id="restriccion-dado" style="color:#333; font-weight:bold; margin:10px 0;"></div>
 
     <!-- Botón para cambiar de turno -->
     <button class="CambioTurno" id="btn-cambiar-turno">
@@ -102,7 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCambiarTurno  = document.getElementById("btn-cambiar-turno");
   const turnoInfo        = document.getElementById("turno-info");
 
-  const maxJugadores = 5;
+  // Usar los nombres de los jugadores y cantidad real
+  const nombresJugadores = window.nombresJugadores && window.nombresJugadores.length > 0 ? window.nombresJugadores : ["Jugador 1"];
+  const maxJugadores = nombresJugadores.length;
   let turnoActual    = 1;
   let dinoColocado   = false;
 
@@ -198,28 +206,30 @@ document.addEventListener("DOMContentLoaded", () => {
     "Solo en recintos que estén vacíos"
   ];
   let restriccionActual = null;
+  const restriccionDadoDiv = document.getElementById("restriccion-dado");
+  // Contador de colocaciones en la ronda actual (por jugador)
+  let colocacionesEnRonda = 0;
 
   const validadores = {
     "Solo en los recintos de la derecha": (zona, imgs) =>
-      ["region-top-right","region-middle-right","region-bottom-right"].includes(zona),
+      zona === "region-center" ? true : ["region-top-right","region-middle-right","region-bottom-right"].includes(zona),
     "Solo en los recintos de la izquierda": (zona, imgs) =>
-      ["region-top-left","region-middle-left","region-bottom-left"].includes(zona),
+      zona === "region-center" ? true : ["region-top-left","region-middle-left","region-bottom-left"].includes(zona),
     "Solo en los recintos de la zona boscosa": (zona, imgs) =>
-      ["region-top-left","region-top-right","region-middle-left"].includes(zona),
+      zona === "region-center" ? true : ["region-top-left","region-top-right","region-middle-left"].includes(zona),
     "Solo en los recintos de la zona rocosa": (zona, imgs) =>
-      ["region-bottom-left","region-bottom-right","region-middle-right"].includes(zona),
-    "Solo en los recintos que no tengan un T-Rex": (zona, imgs) =>
-      !imgs.some(img => img.src.includes("DinoRojoSprite.png")),
+      zona === "region-center" ? true : ["region-bottom-left","region-bottom-right","region-middle-right"].includes(zona),
+    "No poder colocar donde haya un T-Rex": (zona, imgs) =>
+      zona === "region-center" ? true : !imgs.some(img => img.src.includes("DinoRojoSprite.png")),
     "Solo en recintos que estén vacíos": (zona, imgs) =>
-      imgs.length === 0
+      zona === "region-center" ? true : imgs.length === 0
   };
 
   function tirarDado() {
     const randomIndex = Math.floor(Math.random() * restriccionesDado.length);
     restriccionActual = restriccionesDado[randomIndex];
-    alert("Restricción del turno: " + restriccionActual);
+    restriccionDadoDiv.textContent = "Restricción del turno: " + restriccionActual;
   }
-  document.querySelector(".Dado").addEventListener("click", tirarDado);
 
   // === EVENTOS DE DROP ===
   document.querySelectorAll(".dropzone").forEach(zone => {
@@ -273,20 +283,34 @@ document.addEventListener("DOMContentLoaded", () => {
       source.classList.remove("drag-source");
       zone.appendChild(source);
       dinoColocado = true;
+      // El dado NO cambia aquí, solo el cambio de turno
     });
   });
 
   // === Cambio de turno ===
   btnCambiarTurno.addEventListener("click", () => {
     guardarTablero(turnoActual);
+    // Contar colocación en la ronda actual
+    colocacionesEnRonda++;
+    // Si todos los jugadores han colocado, tirar dado para la siguiente ronda y reiniciar contador
+    if (colocacionesEnRonda >= maxJugadores) {
+      tirarDado();
+      colocacionesEnRonda = 0;
+    }
     turnoActual = (turnoActual % maxJugadores) + 1;
-    turnoInfo.textContent = `Turno: ${turnoActual}`;
+    // Mostrar el nombre del jugador correspondiente
+    const nombre = nombresJugadores[turnoActual - 1] || `Jugador ${turnoActual}`;
+    turnoInfo.textContent = `Turno: ${turnoActual} - ${nombre}`;
     cargarTablero(turnoActual);
     generarDinos();
   });
 
   // Inicialización
+  // Mostrar nombre correcto en el primer turno
+  const nombreInicial = nombresJugadores[0] || "Jugador 1";
+  turnoInfo.textContent = `Turno: 1 - ${nombreInicial}`;
   generarDinos();
+  tirarDado(); // Solo al inicio
 });
 </script>
 
