@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <!-- Estilos externos -->
   <link rel="stylesheet" href="../RECURSOS/CSS/style_calculadora.css">
-  <!-- Librería de iconos (FontAwesome) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Calculadora</title>
 
   <style>
-    /* --- Estilo del tablero --- */
     .tablero {
       background-image: url("../RECURSOS/IMAGENES/SpriteTablero.png");
       background-size: cover;
@@ -21,7 +18,6 @@
       border: 7px solid rgba(255, 255, 255, 1);
     }
 
-    /* Fondo desenfocado con oscurecimiento */
     body::before {
       content: "";
       position: fixed;
@@ -41,12 +37,10 @@
       background-color: #45a049;
       transform: scale(1.1);
     }
-
   </style>
 </head>
 
 <body>
-  <!-- Tablero con 7 zonas donde se pueden colocar los dinosaurios -->
   <div class="tablero" id="tablero"> 
     <div class="region region-top-left dropzone"></div>
     <div class="region region-top-right dropzone"></div>
@@ -57,46 +51,36 @@
     <div class="region region-center dropzone"></div>
   </div>
 
-  <!-- Zona para tomar dinosaurios y botones de control -->
   <div class="tab" id="TomaDinosaurios">
-    <div id="zona-dinos"></div> <!-- Aquí aparecen los dinos disponibles -->
-    
+    <div id="zona-dinos"></div>
     <span id="turno-info" style="color:black; margin-left:10px;">Tablero del jugador: 1</span>
 
-    <!-- Botón con un icono (ejemplo: tirar dado) -->
-    <button class="CalculoF" onclick="alert('¡Botón presionado!')">
-      <label>Calcuar puntaje</label>
+    <button class="CalculoF" id="btn-calcular">
+      <label>Calcular puntaje</label>
       <i class="fa-solid fa-flag-checkered"></i>
     </button>
 
-    <!-- Botón para cambiar de turno -->
     <button class="CambioTurno" id="btn-cambiar-turno">
-      <label>Siguiene jugador</label>
+      <label>Siguiente jugador</label>
       <i class="fa-solid fa-users"></i>
     </button>
    
-   <!-- Botón para regresar (logout) -->
-    <button class="Salir"  onclick="window.location.href='../BACK/logout.php'">
+    <button class="Salir" onclick="window.location.href='../BACK/logout.php'">
       <label>Volver al inicio</label>
       <i class="fa-solid fa-right-from-bracket"></i>
     </button>
   </div>
 
-
-
-  
-<script>
+  <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // --- Constantes y variables globales ---
     const dinosContainer = document.getElementById("zona-dinos");
     const btnCambiarTurno = document.getElementById("btn-cambiar-turno");
+    const btnCalcular = document.getElementById("btn-calcular");
     const turnoInfo = document.getElementById("turno-info");
 
     const maxJugadores = 4;
     let turnoActual = 1;
-    let dinoColocado = false;
 
-    // Tableros de cada jugador: cada jugador tiene un objeto con las regiones
     let tableros = Array.from({ length: maxJugadores }, () => ({
       "region-top-left": [],
       "region-top-right": [],
@@ -107,7 +91,6 @@
       "region-center": []
     }));
 
-    // Lista de dinosaurios disponibles (nombre e imagen)
     const dinos = [
       { nombre: "T-Rex", img: "DinoRojoSprite.png" },
       { nombre: "Triceratops", img: "DinoAmarilloSprite.png" },
@@ -117,7 +100,6 @@
       { nombre: "Ankylosaurus", img: "DinoNaranjaSprite.png" }
     ];
 
-    // Límite de dinosaurios por zona del tablero
     const limitePorZona = {
       "region region-top-left dropzone": 6,
       "region region-top-right dropzone": 1,
@@ -128,40 +110,25 @@
       "region region-center dropzone": 60
     };
 
-    // --- Funciones ---
-
-    /**
-     * Agrega eventos de arrastre y eliminación a un dinosaurio.
-     * Permite arrastrar, eliminar con clic derecho y doble toque.
-     * @param {HTMLElement} elem - Elemento dinosaurio.
-     */
     function agregarEventosArrastre(elem) {
       elem.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("dino-img", elem.querySelector("img").src);
         e.dataTransfer.effectAllowed = "move";
       });
 
-      // Elimina el dinosaurio con clic derecho
       elem.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         elem.remove();
       });
 
-      // Elimina el dinosaurio con doble toque (móvil)
       let lastTap = 0;
       elem.addEventListener("touchstart", () => {
         const currentTime = new Date().getTime();
-        if (currentTime - lastTap < 300) {
-          elem.remove();
-        }
+        if (currentTime - lastTap < 300) elem.remove();
         lastTap = currentTime;
       });
     }
 
-    /**
-     * Genera un set inicial de dinosaurios (uno de cada tipo).
-     * Los muestra en la zona de toma.
-     */
     function generarDinos() {
       dinosContainer.innerHTML = "";
       dinos.forEach((dino) => {
@@ -172,13 +139,8 @@
         agregarEventosArrastre(dinoDiv);
         dinosContainer.appendChild(dinoDiv);
       });
-      dinoColocado = false;
     }
 
-    /**
-     * Guarda el estado actual del tablero del jugador.
-     * @param {number} jugador - Número de jugador (1-indexado).
-     */
     function guardarTablero(jugador) {
       document.querySelectorAll(".dropzone").forEach((zone) => {
         const id = zone.classList[1];
@@ -188,10 +150,6 @@
       });
     }
 
-    /**
-     * Carga el tablero guardado del jugador actual.
-     * @param {number} jugador - Número de jugador (1-indexado).
-     */
     function cargarTablero(jugador) {
       document.querySelectorAll(".dropzone").forEach((zone) => {
         const id = zone.classList[1];
@@ -207,8 +165,6 @@
       });
     }
 
-    // --- Eventos en zonas ---
-    // Permite soltar dinosaurios en las regiones del tablero
     document.querySelectorAll(".dropzone").forEach((zone) => {
       zone.addEventListener("dragover", (e) => {
         e.preventDefault();
@@ -223,7 +179,6 @@
         e.preventDefault();
         zone.style.backgroundColor = "transparent";
 
-        // Límite total de dinosaurios en el tablero
         const totalDinos = document.querySelectorAll(".dropzone img").length;
         if (totalDinos >= 12) {
           alert("El tablero ya cuenta con el límite de 12 dinosaurios");
@@ -241,7 +196,6 @@
             return;
           }
 
-          // Restricción: solo dinos del mismo tipo en region-top-left
           if (zone.classList.contains("region-top-left")) {
             const imgs = zone.querySelectorAll("img");
             if (imgs.length > 0 && imgs[0].src !== dinoImg) {
@@ -250,7 +204,6 @@
             }
           }
 
-          // Restricción: solo dinos diferentes en region-middle-right
           if (zone.classList.contains("region-middle-right")) {
             const imgs = zone.querySelectorAll("img");
             if (Array.from(imgs).some((img) => img.src === dinoImg)) {
@@ -259,43 +212,93 @@
             }
           }
 
-          // Crear clon del dinosaurio y agregarlo a la zona
           const dinoDiv = document.createElement("div");
           dinoDiv.className = "draggable";
           dinoDiv.draggable = true;
           dinoDiv.innerHTML = `<img src="${dinoImg}" alt="Dino">`;
           agregarEventosArrastre(dinoDiv);
-
           zone.appendChild(dinoDiv);
-
-          // Si ya se llenó el tablero, guarda y avisa
-          const totalDinosDespues = document.querySelectorAll(".dropzone img").length;
-          if (totalDinosDespues >= 12) {
-            guardarTablero(turnoActual);
-            alert(`Completaste tu tablero jugador ${turnoActual}, sigue con el siguiente jugador.`);
-          }
         }
       });
     });
 
-    /**
-     * Cambia el turno al siguiente jugador.
-     * Guarda el tablero actual y carga el siguiente.
-     */
     btnCambiarTurno.addEventListener("click", () => {
       guardarTablero(turnoActual);
-      turnoActual = turnoActual + 1;
-      turnoInfo.textContent = `Tablero del jugador: ${turnoActual}`;
-      cargarTablero(turnoActual);
-      generarDinos();
+      if (turnoActual < maxJugadores) {
+        turnoActual++;
+        turnoInfo.textContent = `Tablero del jugador: ${turnoActual}`;
+        cargarTablero(turnoActual);
+        generarDinos();
+      } else {
+        alert("Ya jugaron todos los jugadores.");
+      }
     });
 
-    // --- Inicio ---
+    // Cálculo de puntos según las reglas
+    function calcularPuntaje(jugador) {
+      const tablero = tableros[jugador - 1];
+      let puntos = 0;
+
+      // Función auxiliar para obtener nombre del dino desde la ruta
+      const getNombre = (src) => src.split("/").pop().replace("Sprite.png", "").replace("Dino", "");
+
+      // Regla region-top-left 
+      const topLeft = tablero["region-top-left"].length;
+      const puntosTopLeft = [0, 2, 4, 8, 12, 18, 24];
+      puntos += puntosTopLeft[topLeft] || 0;
+
+      // Regla region-middle-left 
+      if (tablero["region-middle-left"].length === 3) puntos += 7;
+
+      // Regla region-bottom-left 
+      const pares = Math.floor(tablero["region-bottom-left"].length / 2);
+      puntos += pares * 5;
+
+      // Regla region-center
+      puntos += tablero["region-center"].length;
+
+      // Regla region-top-right
+      const dinoTopRight = tablero["region-top-right"][0];
+      if (dinoTopRight) {
+        const nombre = getNombre(dinoTopRight);
+        const totalJugador = Object.values(tablero).flat().filter((src) => getNombre(src) === nombre).length;
+
+        let esMayor = true;
+        for (let i = 0; i < maxJugadores; i++) {
+          if (i === jugador - 1) continue;
+          const totalOtro = Object.values(tableros[i]).flat().filter((src) => getNombre(src) === nombre).length;
+          if (totalOtro > totalJugador) {
+            esMayor = false;
+            break;
+          }
+        }
+        if (esMayor && totalJugador > 0) puntos += 7;
+      }
+
+      // Regla region-middle-right
+      const midRight = tablero["region-middle-right"].length;
+      const puntosMidRight = [0, 1, 3, 6, 10, 15, 21];
+      puntos += puntosMidRight[midRight] || 0;
+
+      // Regla region-bottom-right
+      const todos = Object.values(tablero).flat().map(getNombre);
+      const unicos = new Set(todos);
+      if (todos.length === unicos.size && todos.length > 0) puntos += 7;
+
+      // Regla T-Rex bonus
+      puntos += todos.filter((n) => n === "Rojo").length; // DinoRojoSprite
+
+      return puntos;
+    }
+
+    btnCalcular.addEventListener("click", () => {
+      guardarTablero(turnoActual);
+      const total = calcularPuntaje(turnoActual);
+      alert(`Puntaje del jugador ${turnoActual}: ${total}`);
+    });
+
     generarDinos();
   });
-</script>
-
-
+  </script>
 </body>
 </html>
-
