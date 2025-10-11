@@ -283,8 +283,11 @@
       // Regla region-bottom-right
       const todos = Object.values(tablero).flat().map(getNombre);
       const unicos = new Set(todos);
-      if (todos.length === unicos.size && todos.length > 0) puntos += 7;
-
+      // Solo otorgar el bono si el recinto bottom-right tiene al menos 1 dino
+      if (tablero["region-bottom-right"].length > 0 && todos.length === unicos.size && todos.length > 0) {
+        puntos += 7;
+      }
+      
       // Regla T-Rex bonus
       puntos += todos.filter((n) => n === "Rojo").length; // DinoRojoSprite
 
