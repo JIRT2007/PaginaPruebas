@@ -14,7 +14,7 @@
       background-repeat: no-repeat;
       background-position: center;
       width: 70%;
-      height: 80%;
+      height: 75%;
       border: 7px solid rgba(255, 255, 255, 1);
     }
 
@@ -37,6 +37,60 @@
       background-color: #45a049;
       transform: scale(1.1);
     }
+
+    /* Estilos para el sistema de puntajes */
+    .score-system {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 15px;
+      min-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    .scores-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .player-score {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      padding: 8px 15px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      min-width: 80px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .player-score.leader {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+    }
+
+    .leader-display {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+
+    /* Estilos para botones curvos */
+    .CambioTurno, .Salir {
+      border-radius: 15px !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
   </style>
 </head>
 
@@ -53,12 +107,7 @@
 
   <div class="tab" id="TomaDinosaurios">
     <div id="zona-dinos"></div>
-    <span id="turno-info" style="color:black; margin-left:10px;">Tablero del jugador: 1</span>
-
-    <button class="CalculoF" id="btn-calcular">
-      <label>Calcular puntaje</label>
-      <i class="fa-solid fa-flag-checkered"></i>
-    </button>
+    <span id="turno-info" style="color:black; margin-left:10px; ">Tablero del jugador: 1</span>
 
     <button class="CambioTurno" id="btn-cambiar-turno">
       <label>Siguiente jugador</label>
@@ -71,15 +120,29 @@
     </button>
   </div>
 
+  <!-- Sistema de puntajes -->
+  <div class="score-system" id="score-system">
+    <h3 style="color: white; text-align: center; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Puntajes de Jugadores</h3>
+    <div class="scores-container" id="scores-container">
+      <!-- Los puntajes se mostrarán aquí dinámicamente -->
+    </div>
+    <div class="leader-display" id="leader-display">
+      <span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Líder: </span>
+      <span id="leader-name" style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Ninguno</span>
+    </div>
+  </div>
+
   <script>
   document.addEventListener("DOMContentLoaded", () => {
     const dinosContainer = document.getElementById("zona-dinos");
     const btnCambiarTurno = document.getElementById("btn-cambiar-turno");
-    const btnCalcular = document.getElementById("btn-calcular");
     const turnoInfo = document.getElementById("turno-info");
 
-    const maxJugadores = 4;
+    const maxJugadores = 5;
     let turnoActual = 1;
+    
+    // Sistema de puntajes
+    let puntajes = Array.from({ length: maxJugadores }, () => 0);
 
     let tableros = Array.from({ length: maxJugadores }, () => ({
       "region-top-left": [],
@@ -119,12 +182,28 @@
       elem.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         elem.remove();
+        // Verificar si se debe recalcular puntajes después de eliminar
+        setTimeout(() => {
+          const totalDinos = document.querySelectorAll(".dropzone img").length;
+          if (totalDinos < 12) {
+            recalcularTodosLosPuntajes();
+          }
+        }, 100);
       });
 
       let lastTap = 0;
       elem.addEventListener("touchstart", () => {
         const currentTime = new Date().getTime();
-        if (currentTime - lastTap < 300) elem.remove();
+        if (currentTime - lastTap < 300) {
+          elem.remove();
+          // Verificar si se debe recalcular puntajes después de eliminar
+          setTimeout(() => {
+            const totalDinos = document.querySelectorAll(".dropzone img").length;
+            if (totalDinos < 12) {
+              recalcularTodosLosPuntajes();
+            }
+          }, 100);
+        }
         lastTap = currentTime;
       });
     }
@@ -139,6 +218,70 @@
         agregarEventosArrastre(dinoDiv);
         dinosContainer.appendChild(dinoDiv);
       });
+    }
+
+    // Función para calcular automáticamente los puntajes del jugador actual
+    function calcularPuntajesAutomaticos() {
+      guardarTablero(turnoActual);
+      const total = calcularPuntaje(turnoActual);
+      
+      // Guardar el puntaje del jugador actual
+      puntajes[turnoActual - 1] = total;
+      
+      // Recalcular todos los puntajes para actualizar las reglas competitivas
+      recalcularTodosLosPuntajes();
+      
+      // Mostrar mensaje de cálculo automático
+      alert(`¡Tablero completo! Puntaje del jugador ${turnoActual}: ${total} puntos`);
+    }
+
+    // Función para recalcular todos los puntajes
+    function recalcularTodosLosPuntajes() {
+      for (let i = 0; i < maxJugadores; i++) {
+        // Solo recalcular si el jugador ya tiene un tablero configurado
+        const tieneDinos = Object.values(tableros[i]).flat().length > 0;
+        if (tieneDinos) {
+          puntajes[i] = calcularPuntaje(i + 1);
+        }
+      }
+      actualizarPuntajes();
+    }
+
+    // Función para actualizar la visualización de puntajes
+    function actualizarPuntajes() {
+      const scoresContainer = document.getElementById("scores-container");
+      const leaderDisplay = document.getElementById("leader-name");
+      
+      scoresContainer.innerHTML = "";
+      
+      let maxPuntaje = Math.max(...puntajes);
+      let lideres = [];
+      
+      puntajes.forEach((puntaje, index) => {
+        const playerDiv = document.createElement("div");
+        playerDiv.className = "player-score";
+        
+        if (puntaje === maxPuntaje && maxPuntaje > 0) {
+          playerDiv.classList.add("leader");
+          lideres.push(`Jugador ${index + 1}`);
+        }
+        
+        playerDiv.innerHTML = `
+          <div style="font-size: 0.9em;">Jugador ${index + 1}</div>
+          <div style="font-size: 1.2em;">${puntaje}</div>
+        `;
+        
+        scoresContainer.appendChild(playerDiv);
+      });
+      
+      // Actualizar el líder
+      if (lideres.length === 0) {
+        leaderDisplay.textContent = "Ninguno";
+      } else if (lideres.length === 1) {
+        leaderDisplay.textContent = lideres[0];
+      } else {
+        leaderDisplay.textContent = `Empate: ${lideres.join(", ")}`;
+      }
     }
 
     function guardarTablero(jugador) {
@@ -218,6 +361,15 @@
           dinoDiv.innerHTML = `<img src="${dinoImg}" alt="Dino">`;
           agregarEventosArrastre(dinoDiv);
           zone.appendChild(dinoDiv);
+
+          // Verificar si se alcanzó el límite de 12 dinosaurios después de agregar este
+          const nuevoTotalDinos = document.querySelectorAll(".dropzone img").length;
+          if (nuevoTotalDinos >= 12) {
+            // Calcular puntajes automáticamente cuando se complete el tablero
+            setTimeout(() => {
+              calcularPuntajesAutomaticos();
+            }, 100); // Pequeño delay para que se complete la animación
+          }
         }
       });
     });
@@ -229,6 +381,9 @@
         turnoInfo.textContent = `Tablero del jugador: ${turnoActual}`;
         cargarTablero(turnoActual);
         generarDinos();
+        
+        // Recalcular todos los puntajes para actualizar las reglas que dependen de comparaciones
+        recalcularTodosLosPuntajes();
       } else {
         alert("Ya jugaron todos los jugadores.");
       }
@@ -257,22 +412,31 @@
       // Regla region-center
       puntos += tablero["region-center"].length;
 
-      // Regla region-top-right
+      // Regla region-top-right (Rey - Mayoría entre todos los jugadores)
       const dinoTopRight = tablero["region-top-right"][0];
       if (dinoTopRight) {
         const nombre = getNombre(dinoTopRight);
+        // Contar TODOS los dinosaurios de esta especie en el tablero del jugador (incluyendo el rey)
         const totalJugador = Object.values(tablero).flat().filter((src) => getNombre(src) === nombre).length;
 
-        let esMayor = true;
+        // Verificar si este jugador tiene la mayoría o empate de este dinosaurio entre todos los jugadores
+        let tieneMayoria = true;
         for (let i = 0; i < maxJugadores; i++) {
-          if (i === jugador - 1) continue;
+          if (i === jugador - 1) continue; // Saltar el jugador actual
+          // Contar TODOS los dinosaurios de esta especie en el tablero del otro jugador
           const totalOtro = Object.values(tableros[i]).flat().filter((src) => getNombre(src) === nombre).length;
+          // Si otro jugador tiene MÁS de este dinosaurio, no tiene mayoría
           if (totalOtro > totalJugador) {
-            esMayor = false;
+            tieneMayoria = false;
             break;
           }
         }
-        if (esMayor && totalJugador > 0) puntos += 7;
+        
+        // Solo otorgar puntos si tiene mayoría o empate (más o igual que todos los demás)
+        // El rey cuenta como uno más en el total para determinar la mayoría
+        if (tieneMayoria && totalJugador > 0) {
+          puntos += 7;
+        }
       }
 
       // Regla region-middle-right
@@ -299,13 +463,8 @@
       return puntos;
     }
 
-    btnCalcular.addEventListener("click", () => {
-      guardarTablero(turnoActual);
-      const total = calcularPuntaje(turnoActual);
-      alert(`Puntaje del jugador ${turnoActual}: ${total}`);
-    });
-
     generarDinos();
+    actualizarPuntajes(); // Inicializar la visualización de puntajes
   });
   </script>
 </body>
