@@ -281,14 +281,19 @@
       puntos += puntosMidRight[midRight] || 0;
 
       // Regla region-bottom-right
-      const todos = Object.values(tablero).flat().map(getNombre);
-      const unicos = new Set(todos);
-      // Solo otorgar el bono si el recinto bottom-right tiene al menos 1 dino
-      if (tablero["region-bottom-right"].length > 0 && todos.length === unicos.size && todos.length > 0) {
-        puntos += 7;
+      const dinoBottomRight = tablero["region-bottom-right"][0];
+      if (dinoBottomRight) {
+        const nombreBottomRight = getNombre(dinoBottomRight);
+        // Contar cuántas veces aparece este dinosaurio en el tablero
+        const aparicionesEnTablero = Object.values(tablero).flat().filter((src) => getNombre(src) === nombreBottomRight).length;
+        // Solo otorgar puntos si el dinosaurio aparece exactamente 1 vez (no se repite)
+        if (aparicionesEnTablero === 1) {
+          puntos += 7;
+        }
       }
       
       // Regla T-Rex bonus
+      const todos = Object.values(tablero).flat().map(getNombre);
       puntos += todos.filter((n) => n === "Rojo").length; // DinoRojoSprite
 
       return puntos;
