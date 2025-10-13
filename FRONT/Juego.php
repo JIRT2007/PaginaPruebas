@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let turnoActual    = 1;
   let dinoColocado   = false;
   let jugadorActual = 1; // índice del jugador actual (1 a maxJugadores)
+  let jugadorConDado = 1; // jugador que tiene el dado (no recibe restricción)
 
   // --- Estado de los tableros ---
   let tableros = Array.from({ length: maxJugadores }, () => ({
@@ -247,7 +248,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function tirarDado() {
     const randomIndex = Math.floor(Math.random() * restriccionesDado.length);
     restriccionActual = restriccionesDado[randomIndex];
-    restriccionDadoDiv.textContent = "Restricción del turno: " + restriccionActual;
+    const nombreConDado = nombresJugadores[jugadorConDado - 1] || `Jugador ${jugadorConDado}`;
+    restriccionDadoDiv.textContent = `Restricción del turno: ${restriccionActual} (${nombreConDado} lanzó el dado)`;
   }
 
   // === EVENTOS DE DROP ===
@@ -271,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const nuevoSrc = source.querySelector("img").src;
 
       // --- Validación del dado ---
-      if (restriccionActual) {
+      if (restriccionActual && jugadorActual !== jugadorConDado) {
         const valido = validadores[restriccionActual](idZona, imgs);
         if (!valido) {
           alert("No puedes colocar aquí: " + restriccionActual);
@@ -326,15 +328,17 @@ document.addEventListener("DOMContentLoaded", () => {
       // y aumentamos el número de ronda global
       jugadorActual = 1;
       turnoActual++;
-      // Rotar manos a la "izquierda" (ej: 1->3->2->1 para 3 jugadores)
-      // Solo rotar si NO es inicio de nueva ronda de reparto (turno 7)
-      if (turnoActual !== 7 && turnoActual <= 12) {
-        const manosPrevias = manoPorJugador.map(m => m.slice());
-        for (let k = 0; k < maxJugadores; k++) {
-          const receptor = (k - 1 + maxJugadores) % maxJugadores; // izquierda
-          manoPorJugador[receptor] = manosPrevias[k];
+        // Rotar manos a la "izquierda" (ej: 1->3->2->1 para 3 jugadores)
+        // Solo rotar si NO es inicio de nueva ronda de reparto (turno 7)
+        if (turnoActual !== 7 && turnoActual <= 12) {
+          const manosPrevias = manoPorJugador.map(m => m.slice());
+          for (let k = 0; k < maxJugadores; k++) {
+            const receptor = (k - 1 + maxJugadores) % maxJugadores; // izquierda
+            manoPorJugador[receptor] = manosPrevias[k];
+          }
+          // Pasar el dado al jugador de la derecha
+          jugadorConDado = (jugadorConDado % maxJugadores) + 1;
         }
-      }
       // Repartir nueva mano al inicio de la ronda 2 (turno 7)
       if (turnoActual === 7) {
         repartirManosRonda(6);
