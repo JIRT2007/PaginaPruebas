@@ -15,7 +15,7 @@ $database = "draftosaurus";
 */
 
 // Crear conexión
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($hostname, $username, $password, $database);
 
 // Verificar conexión
 if ($conn->connect_error) {
