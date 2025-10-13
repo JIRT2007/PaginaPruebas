@@ -56,7 +56,50 @@ $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
       transform: scale(1.1);
     }
 
+    /* Estilos para el sistema de puntajes */
+    .score-system {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 15px;
+      min-width: 400px;
+      backdrop-filter: blur(10px);
+    }
 
+    .scores-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .player-score {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      padding: 8px 15px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      min-width: 80px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .player-score.leader {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+    }
+
+    .leader-display {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
 
   </style>
 </head>
@@ -101,6 +144,18 @@ $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
     </button>
   </div>
 
+  <!-- Sistema de puntajes -->
+  <div class="score-system" id="score-system">
+    <h3 style="color: white; text-align: center; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Puntajes de Jugadores</h3>
+    <div class="scores-container" id="scores-container">
+      <!-- Los puntajes se mostrarán aquí dinámicamente -->
+    </div>
+    <div class="leader-display" id="leader-display">
+      <span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Líder: </span>
+      <span id="leader-name" style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Ninguno</span>
+    </div>
+  </div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -134,6 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Mano por ronda (6 por jugador), se reparte al inicio de las rondas 1 y 7 ---
   const manoPorJugador = Array.from({ length: maxJugadores }, () => []);
+  
+  // Sistema de puntajes
+  let puntajes = Array.from({ length: maxJugadores }, () => 0);
+  
   function repartirManosRonda(cantidad) {
     for (let j = 0; j < maxJugadores; j++) {
       const nuevaMano = [];
@@ -164,6 +223,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     elem.addEventListener("dragend", () => {
       elem.classList.remove("drag-source");
+    });
+    
+    // Click derecho para quitar dinosaurio del tablero y devolverlo a la mano
+    elem.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      // Solo permitir quitar si está en el tablero (no en la zona de mano)
+      if (elem.closest('.dropzone')) {
+        const imgSrc = elem.querySelector('img').src;
+        const mano = manoPorJugador[jugadorActual - 1];
+        if (mano) {
+          mano.push(imgSrc); // Devolver a la mano
+          elem.remove(); // Quitar del tablero
+          dinoColocado = false; // Permitir colocar otro
+          generarDinos(); // Refrescar la vista de la mano
+          // Actualizar puntajes después de quitar un dinosaurio
+          recalcularTodosLosPuntajes();
+        }
+      }
     });
   }
 
@@ -252,6 +329,124 @@ document.addEventListener("DOMContentLoaded", () => {
     restriccionDadoDiv.textContent = `Restricción del turno: ${restriccionActual} (${nombreConDado} lanzó el dado)`;
   }
 
+  // Función para obtener nombre del dino desde la ruta
+  const getNombre = (src) => src.split("/").pop().replace("Sprite.png", "").replace("Dino", "");
+
+  // Cálculo de puntos según las reglas
+  function calcularPuntaje(jugador) {
+    const tablero = tableros[jugador - 1];
+    let puntos = 0;
+
+    // Regla region-top-left (Bosque de la semejanza)
+    const topLeft = tablero["region-top-left"].length;
+    const puntosTopLeft = [0, 2, 4, 8, 12, 18, 24];
+    puntos += puntosTopLeft[topLeft] || 0;
+
+    // Regla region-middle-left (3 dinos = 7 puntos)
+    if (tablero["region-middle-left"].length === 3) puntos += 7;
+
+    // Regla region-bottom-left (Parejas = 5 puntos cada una)
+    const pares = Math.floor(tablero["region-bottom-left"].length / 2);
+    puntos += pares * 5;
+
+    // Regla region-center (1 punto por dino)
+    puntos += tablero["region-center"].length;
+
+    // Regla region-top-right (Rey - Mayoría entre todos los jugadores)
+    const dinoTopRight = tablero["region-top-right"][0];
+    if (dinoTopRight) {
+      const nombre = getNombre(dinoTopRight);
+      // Contar TODOS los dinosaurios de esta especie en el tablero del jugador
+      const totalJugador = Object.values(tablero).flat().filter((src) => getNombre(src) === nombre).length;
+
+      // Verificar si este jugador tiene la mayoría o empate de este dinosaurio
+      let tieneMayoria = true;
+      for (let i = 0; i < maxJugadores; i++) {
+        if (i === jugador - 1) continue;
+        const totalOtro = Object.values(tableros[i]).flat().filter((src) => getNombre(src) === nombre).length;
+        if (totalOtro > totalJugador) {
+          tieneMayoria = false;
+          break;
+        }
+      }
+      
+      if (tieneMayoria && totalJugador > 0) {
+        puntos += 7;
+      }
+    }
+
+    // Regla region-middle-right (El prado de la diferencia)
+    const midRight = tablero["region-middle-right"].length;
+    const puntosMidRight = [0, 1, 3, 6, 10, 15, 21];
+    puntos += puntosMidRight[midRight] || 0;
+
+    // Regla region-bottom-right (Dinosaurio único)
+    const dinoBottomRight = tablero["region-bottom-right"][0];
+    if (dinoBottomRight) {
+      const nombreBottomRight = getNombre(dinoBottomRight);
+      const aparicionesEnTablero = Object.values(tablero).flat().filter((src) => getNombre(src) === nombreBottomRight).length;
+      if (aparicionesEnTablero === 1) {
+        puntos += 7;
+      }
+    }
+    
+    // Regla T-Rex bonus (1 punto por cada T-Rex)
+    const todos = Object.values(tablero).flat().map(getNombre);
+    puntos += todos.filter((n) => n === "Rojo").length;
+
+    return puntos;
+  }
+
+  // Función para actualizar la visualización de puntajes
+  function actualizarPuntajes() {
+    const scoresContainer = document.getElementById("scores-container");
+    const leaderDisplay = document.getElementById("leader-name");
+    
+    scoresContainer.innerHTML = "";
+    
+    let maxPuntaje = Math.max(...puntajes);
+    let lideres = [];
+    
+    puntajes.forEach((puntaje, index) => {
+      const playerDiv = document.createElement("div");
+      playerDiv.className = "player-score";
+      
+      if (puntaje === maxPuntaje && maxPuntaje > 0) {
+        playerDiv.classList.add("leader");
+        const nombre = nombresJugadores[index] || `Jugador ${index + 1}`;
+        lideres.push(nombre);
+      }
+      
+      const nombre = nombresJugadores[index] || `Jugador ${index + 1}`;
+      playerDiv.innerHTML = `
+        <div style="font-size: 0.9em;">${nombre}</div>
+        <div style="font-size: 1.2em;">${puntaje}</div>
+      `;
+      
+      scoresContainer.appendChild(playerDiv);
+    });
+    
+    // Actualizar el líder
+    if (lideres.length === 0) {
+      leaderDisplay.textContent = "Ninguno";
+    } else if (lideres.length === 1) {
+      leaderDisplay.textContent = lideres[0];
+    } else {
+      leaderDisplay.textContent = `Empate: ${lideres.join(", ")}`;
+    }
+  }
+
+  // Función para recalcular todos los puntajes
+  function recalcularTodosLosPuntajes() {
+    for (let i = 0; i < maxJugadores; i++) {
+      const tieneDinos = Object.values(tableros[i]).flat().length > 0;
+      if (tieneDinos) {
+        puntajes[i] = calcularPuntaje(i + 1);
+      }
+    }
+    actualizarPuntajes();
+  }
+
   // === EVENTOS DE DROP ===
   document.querySelectorAll(".dropzone").forEach(zone => {
     zone.addEventListener("dragover", e => {
@@ -310,14 +505,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!Number.isNaN(idx) && mano && idx >= 0 && idx < mano.length) {
         mano.splice(idx, 1);
       }
-      // Refrescar la mano visible para que se vea consumido
-      generarDinos();
+      // NO refrescar la mano aquí para evitar que se puedan arrastrar más dinos
+      // La mano se refrescará al cambiar de turno
+      // Actualizar puntajes después de colocar un dinosaurio
+      recalcularTodosLosPuntajes();
       // El dado NO cambia aquí, solo el cambio de turno
     });
   });
 
   // === Cambio de turno ===
   btnCambiarTurno.addEventListener("click", () => {
+    // Solo permitir cambio si se colocó un dinosaurio
+    if (!dinoColocado) {
+      alert("Debes colocar un dinosaurio antes de pasar de turno");
+      return;
+    }
     guardarTablero(jugadorActual);
 
     // Pasar al siguiente jugador
@@ -350,6 +552,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Si ya se completaron 12 rondas, terminar partida
     if (turnoActual > 12) {
+      // Calcular puntajes finales
+      recalcularTodosLosPuntajes();
+      
+      // Mostrar resultados finales
+      let mensajeFinal = "¡Fin de la partida!\n\nPuntajes finales:\n";
+      puntajes.forEach((puntaje, index) => {
+        const nombre = nombresJugadores[index] || `Jugador ${index + 1}`;
+        mensajeFinal += `${nombre}: ${puntaje} puntos\n`;
+      });
+      
+      const maxPuntaje = Math.max(...puntajes);
+      const ganadores = [];
+      puntajes.forEach((puntaje, index) => {
+        if (puntaje === maxPuntaje) {
+          const nombre = nombresJugadores[index] || `Jugador ${index + 1}`;
+          ganadores.push(nombre);
+        }
+      });
+      
+      if (ganadores.length === 1) {
+        mensajeFinal += `\n¡${ganadores[0]} es el ganador!`;
+      } else {
+        mensajeFinal += `\n¡Empate entre: ${ganadores.join(", ")}!`;
+      }
+      
+      alert(mensajeFinal);
       turnoInfo.textContent = "Fin de la partida. ¡Gracias por jugar!";
       btnCambiarTurno.disabled = true;
       return;
@@ -360,6 +588,10 @@ document.addEventListener("DOMContentLoaded", () => {
     turnoInfo.textContent = `Turno: ${turnoActual} - ${nombre}`;
     cargarTablero(jugadorActual);
     generarDinos();
+    // Resetear el estado de colocación para el nuevo jugador
+    dinoColocado = false;
+    // Actualizar puntajes al cambiar de turno
+    recalcularTodosLosPuntajes();
   });
 
   // Inicialización
@@ -369,6 +601,8 @@ document.addEventListener("DOMContentLoaded", () => {
   repartirManosRonda(6);
   generarDinos();
   tirarDado(); // Solo al inicio
+  // Inicializar el sistema de puntajes
+  actualizarPuntajes();
 });
 </script>
 
