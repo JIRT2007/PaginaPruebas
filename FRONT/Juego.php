@@ -131,6 +131,19 @@ document.addEventListener("DOMContentLoaded", () => {
     "../RECURSOS/IMAGENES/DinoVioletaSprite.png"
   ];
 
+  // --- Mano por ronda (6 por jugador), se reparte al inicio de las rondas 1 y 7 ---
+  const manoPorJugador = Array.from({ length: maxJugadores }, () => []);
+  function repartirManosRonda(cantidad) {
+    for (let j = 0; j < maxJugadores; j++) {
+      const nuevaMano = [];
+      for (let i = 0; i < cantidad; i++) {
+        const imgSrc = imagenesDinos[Math.floor(Math.random() * imagenesDinos.length)];
+        nuevaMano.push(imgSrc);
+      }
+      manoPorJugador[j] = nuevaMano;
+    }
+  }
+
   const limitePorZona = {
     "region region-top-left dropzone": 6,
     "region region-top-right dropzone": 1,
@@ -155,11 +168,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function generarDinos() {
     dinosContainer.innerHTML = "";
-    for (let i = 0; i < 6; i++) {
-      const imgSrc = imagenesDinos[Math.floor(Math.random() * imagenesDinos.length)];
+    const manoActual = manoPorJugador[jugadorActual - 1] || [];
+    // Mostrar hasta 6 dinos de la mano persistente (sin re-randomizar)
+    const cantidadAMostrar = Math.min(6, manoActual.length);
+    for (let i = 0; i < cantidadAMostrar; i++) {
+      const imgSrc = manoActual[i];
       const dinoDiv = document.createElement("div");
       dinoDiv.classList.add("draggable");
       dinoDiv.draggable = true;
+      // Guardar el índice de la mano para poder "gastar" el dino al colocarlo
+      dinoDiv.dataset.manoIndex = String(i);
       const img = document.createElement("img");
       img.src = imgSrc;
       img.alt = "Dino";
@@ -284,6 +302,14 @@ document.addEventListener("DOMContentLoaded", () => {
       source.classList.remove("drag-source");
       zone.appendChild(source);
       dinoColocado = true;
+      // Consumir el dinosaurio de la mano del jugador actual
+      const idx = parseInt(source.dataset.manoIndex || "-1", 10);
+      const mano = manoPorJugador[jugadorActual - 1];
+      if (!Number.isNaN(idx) && mano && idx >= 0 && idx < mano.length) {
+        mano.splice(idx, 1);
+      }
+      // Refrescar la mano visible para que se vea consumido
+      generarDinos();
       // El dado NO cambia aquí, solo el cambio de turno
     });
   });
@@ -300,13 +326,26 @@ document.addEventListener("DOMContentLoaded", () => {
       // y aumentamos el número de ronda global
       jugadorActual = 1;
       turnoActual++;
-      if (turnoActual <= 6) {
+      // Rotar manos a la "izquierda" (ej: 1->3->2->1 para 3 jugadores)
+      // Solo rotar si NO es inicio de nueva ronda de reparto (turno 7)
+      if (turnoActual !== 7 && turnoActual <= 12) {
+        const manosPrevias = manoPorJugador.map(m => m.slice());
+        for (let k = 0; k < maxJugadores; k++) {
+          const receptor = (k - 1 + maxJugadores) % maxJugadores; // izquierda
+          manoPorJugador[receptor] = manosPrevias[k];
+        }
+      }
+      // Repartir nueva mano al inicio de la ronda 2 (turno 7)
+      if (turnoActual === 7) {
+        repartirManosRonda(6);
+      }
+      if (turnoActual <= 12) {
         tirarDado(); // Solo tirar dado si no terminó el juego
       }
     }
 
-    // Si ya se completaron 6 rondas, terminar partida
-    if (turnoActual > 6) {
+    // Si ya se completaron 12 rondas, terminar partida
+    if (turnoActual > 12) {
       turnoInfo.textContent = "Fin de la partida. ¡Gracias por jugar!";
       btnCambiarTurno.disabled = true;
       return;
@@ -322,6 +361,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialización
   // Mostrar nombre correcto en el primer turno
   turnoInfo.textContent = `Turno: 1 - ${nombresJugadores[0] || "Jugador 1"}`;
+  // Repartir mano inicial para la ronda 1
+  repartirManosRonda(6);
   generarDinos();
   tirarDado(); // Solo al inicio
 });
