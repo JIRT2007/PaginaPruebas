@@ -106,41 +106,50 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 </section>
 
 <section id="Reglas" class="Reglas">
-  <h3>
- -Instrumentos:
-<br>
-*5 Tableros de parque (Uno paracada jugador).
+<h2>Reglamentacion</h2>
+
+  <p font-size: 1.2rem;>
+ 
+ 
+<b> -Instrumentos: </b>
+
+<br><br>
+*5 Tableros de parque (Uno para cada jugador).
 <br>
 *60 Piezas de dinosauros (En 6 colores diferentes, representando diferentes especies).
 <br>
 *1 Dado de colocacion.
-<br>
-*1 Saco de tela.
-<br>
-*Manual de reglamento del juego.
 <br><br>
--Objetivo del juego:
-<br>
+
+<b>-Objetivo del juego:</b>
+
+<br><br>
 *Construir un parque de dinosaurios y colocarlos de forma estrategica en los distintos recintos del mapa para obtener la mayor cantidad de puntos al final de las partidas.
 <br><br>
--Como se inicia el juego?:
-<br>
+
+<b>-Como se inicia el juego?:</b>
+
+<br><br>
 *El juego se desarrolla en dos rondas las cuales cuentan con seis turnos. Al inicio cada jugador toma un tablero del parque y lo coloca frente a si, todas las piezas de dinosaurios se meten en el saco de tela y se mezclan y finalmente los jugadores deben de llegar a un consenso (o dejarlo al azar) para determinar quien inicia el juego.
 <br><br>
--Inicio del juego:
-<br>
-1- Cada jugador toma 6 piezas de dinosaurios al azar y las oculta del resto de jugadores.
-<br>
+
+<b>-Inicio del juego:</b>
+
+<br><br>
+1- Cada jugador toma 6 piezas de dinosaurios al azar.
+<br><br>
 2- Los jugdores inician a lanzar el dado el cual impone una restriccion para el resto de jugadores en la colocacion del siguiente dinosaurio (Estas restricciones no se aplican al jugador que lanza el dado).
-<br>
+<br><br>
 3- Los jugadores eligen 1 dinosaurios de su mano y lo colocan en su parque, respetando las reglas de colocacion y las restricciones del dado.
-<br>
+<br><br>
 4- Cada jugador pasa las piezas de dinosaurios restantes de su mano al jugador a su izquierda, el jugador que lanzo el dado previamente tiene que pasarselo al jugador a su derecha y se repite el proceso de los pasos anteriores hasta que se hayan colocado 6 dinosaurios en los tableros.
-<br>
+<br><br>
 5- Se repiten los pasos sacando 6 dinosaurios nuevos de la bolsa para una segunda ronda.
 <br><br>
--Restricciones del dado:
-<br>
+
+<b>-Restricciones del dado:</b>
+
+<br><br>
 *El dado del juego determina en que zona del parque se debe colocar un dinosaurio en ese turno (Dicha restriccion no aplica al jugador que lo lanza).
 <br><br>
 # Zona izquiera o derecha del parque.
@@ -153,18 +162,20 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 <br><br>
 *Si un jugador no puede colocar un dinosaurio en un recinto valido, debe colocarlo en un espacio de rio.
 <br><br>
--Reglas de los recintos y puntuacion:
-<br>
+
+<b>-Reglas de los recintos y puntuacion:</b>
+
+<br><br>
 1- "Bosque de la semejanza": Este recinto solo puede albergar dinosaurios de la misma especie y debe de ocuparse siempre de izquierda a derecha sin dejar espacios intermedios. Al final de la partida, el jugador ganara los puntos de victoria indicados segun el numero total de dinosaurios colocados.
-<br>
+<br><br>
 2- "El prado de la diferencia": Solo puede albergar dinosaurios de especies distintas y debe de ocuparse siempre de izquierda a derecha sin dejar espacios intermedios. Al final de la partida, el jugador ganara los puntos de victoria indicados.
-<br>
+<br><br>
 3- "La pradera del amor": Puede albergar dinosaurios de todas las especies y al finalizar la partida conseguiras 5 puntos de victoria por cada pareja de dinosaurios de la misma especie que se encentre en el recinto. Esta permitido tener mas de una pareja de la misma especie pero los dinosaurios que no formen parte de una.
 <br>
 4- "El trio frondoso": Alberga hasta tres dinosaurios sin importar su especie y al final de la partida el jugador ganara 7 puntos de victoria si hay exactamente 3 piezas de dinosaurio dentro del recinto pero si al final de la partida el jugador no logra llenar el recitno con exactamente 3 dinosaurios, no ganara ningun punto.
-<br>
+<br><br>
 5- "El rey de la selva": Este recinto puede albergar un unico dinosaurio y al final de la partida ganara el jugador 7 puntos si ningun otro jugador tiene en su parque mas dinosaurios que tu de esa especie pero en caso de empate recibes igualmente los 7 puntos.
-<br>
+<br><br>
 6- "La isla solitaria": Al igual que el recinto anterior, este solo puede albergar un unico dinosaurios que al final de la partida le otorga 7 puntos si es el unico de su especie en el parque del jugador, en caso contrario no otorga ningun punto.
 <br><br>
 *Despues de la segunda ronda (Cuando cada jugador ha ganado 12 dinosaurios en su parque), se suman los puntos y se determina el ganador.
@@ -175,7 +186,9 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 # El jugador con mas puntos es el ganador.<br>
 # En un caso de empate por puntos, gana aquel jugador que tenga mas dinosaurios en su parque.<br>
 <br><br>
--Resumen del reglamento y modo de juego:
+
+<b>-Resumen del reglamento y modo de juego:</b>
+
 <br><br>
 # Tomar 6 piezas de dinosaurios.<br>
 # Lanzar el dado y aplicar la restriccion designada.<br>
@@ -184,7 +197,7 @@ Buscamos traer a la vida a nuestros queridos amigos del Triasico, Jurasico y Cre
 # Repetir hasta colocar 6 piezas de dinosaurios (Final de la ronda)<br>
 # Hacer una segunda ronda con otros 6 dinosaurios.<br>
 # Contar los puntos y determinar."<br>
-    </h3>
+</p>
 </section>
 
 
