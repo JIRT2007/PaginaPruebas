@@ -375,6 +375,13 @@
     });
 
     btnCambiarTurno.addEventListener("click", () => {
+      // Validar que el tablero actual tenga 12 dinosaurios antes de avanzar
+      const totalDinos = document.querySelectorAll(".dropzone img").length;
+      if (totalDinos < 12) {
+        alert("Debes colocar tus 12 dinosaurios para pasar al siguiente jugador");
+        return;
+      }
+
       guardarTablero(turnoActual);
       if (turnoActual < maxJugadores) {
         turnoActual++;
