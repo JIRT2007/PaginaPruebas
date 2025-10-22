@@ -135,11 +135,13 @@ $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
 
     <!-- Botón para cambiar de turno -->
     <button class="CambioTurno" id="btn-cambiar-turno">
+      <label>Cambiar Turno</label>
       <i class="fa-solid fa-users"></i>
     </button>
    
     <!-- Botón para regresar (logout) -->
     <button class="Salir"  onclick="window.location.href='../BACK/logout.php'">
+      <label>Salir</label>
       <i class="fa-solid fa-right-from-bracket"></i>
     </button>
   </div>

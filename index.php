@@ -45,6 +45,10 @@
     <i class="fa-regular fa-book"></i> Login Administrador 
   </button>
 
+    <button class="BotonRedireccion03" onclick="window.location.href='FRONT/RegistroPartidas.php'">
+    <i class="fa-regular fa-book"></i> Registro de partidas 
+  </button>
+
 </div>
 
 <script>
