@@ -17,7 +17,7 @@ $password = "mBdi4#32";
 $database = "draftosaurus";
 */
 
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($hostname, $username, $password, $database);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }

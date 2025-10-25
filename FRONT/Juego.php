@@ -9,6 +9,9 @@ if (session_status() === PHP_SESSION_NONE) {
 $jugadores = isset($_SESSION['jugadores']) ? array_filter($_SESSION['jugadores'], function($j) { return !empty($j); }) : [];
 $jugadores = array_values($jugadores); // Reindexar
 $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
+
+// Obtener el ID de la partida de la URL
+$id_partida = isset($_GET['id_partida']) ? intval($_GET['id_partida']) : null;
 ?>
 
 <!DOCTYPE html>
@@ -74,8 +77,9 @@ $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
     
     <span id="turno-info" style="color:black; margin-left:10px;"> Turno: 1 - <?php echo isset($jugadores[0]) ? htmlspecialchars($jugadores[0]) : 'Jugador 1'; ?></span>
     <script>
-      // Pasar los nombres de los jugadores y cantidad al JS
+      // Pasar los nombres de los jugadores, cantidad e ID de partida al JS
       window.nombresJugadores = <?php echo json_encode($jugadores); ?>;
+      window.idPartida = <?php echo $id_partida !== null ? $id_partida : 'null'; ?>;
     </script>
 
 
@@ -395,6 +399,32 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarPuntajes();
   }
 
+  // Función para guardar el resultado de la partida en la base de datos
+  async function guardarResultadoPartida(idPartida, ganador) {
+    try {
+      const response = await fetch('../BACK/guardar_resultado_partida.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_partida: idPartida,
+          ganador: ganador
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('Resultado guardado exitosamente:', data.message);
+      } else {
+        console.error('Error al guardar resultado:', data.error);
+      }
+    } catch (error) {
+      console.error('Error en la petición:', error);
+    }
+  }
+
   // === EVENTOS DE DROP ===
   document.querySelectorAll(".dropzone").forEach(zone => {
     zone.addEventListener("dragover", e => {
@@ -519,15 +549,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       
+      let textoGanador = "";
       if (ganadores.length === 1) {
         mensajeFinal += `\n¡${ganadores[0]} es el ganador!`;
+        textoGanador = ganadores[0];
       } else {
         mensajeFinal += `\n¡Empate entre: ${ganadores.join(", ")}!`;
+        textoGanador = "Empate: " + ganadores.join(", ");
       }
       
       alert(mensajeFinal);
       turnoInfo.textContent = "Fin de la partida. ¡Gracias por jugar!";
       btnCambiarTurno.disabled = true;
+      
+      // Enviar resultado a la base de datos solo si hay ID de partida
+      if (window.idPartida && window.idPartida !== null) {
+        guardarResultadoPartida(window.idPartida, textoGanador);
+      }
+      
       return;
     }
 
