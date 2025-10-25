@@ -157,22 +157,189 @@ body {
       margin-top:5%;
     }
 
-    /* Responsive: para pantallas pequeñas */
-@media (max-width: 900px) {
+    /* LAYOUT MÓVIL ESPECÍFICO */
+    @media (max-width: 768px) {
+      body {
+        display: grid;
+        grid-template-areas: 
+          "tablero dinosaurios"
+          "puntuacion puntuacion";
+        grid-template-columns: 3fr 1fr;
+        grid-template-rows: 1fr auto;
+        height: 100vh;
+        padding: 1%;
+        gap: 10px;
+      }
+
+      .tablero {
+        grid-area: tablero;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        border: 3px solid rgba(255, 255, 255, 1);
+      }
+
+      .tab {
+        grid-area: dinosaurios;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        background-color: rgba(245,245,220,0.95);
+        border-radius: 10px;
+        padding: 10px;
+        overflow-y: auto;
+      }
+
+      .puntuacion-container {
+        grid-area: puntuacion;
+        background-color: rgba(245,245,220,0.95);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .draggable {
+        width: 50px;
+        height: 50px;
+      }
+
+      .BotonRedireccionInicio, 
+      .BotonRedireccionCambio, 
+      .BotonRedireccionObtenerDinos {
+        font-size: 0.8rem;
+        padding: 8px;
+        margin-bottom: 5px;
+      }
+
+      .CambioTurno, .ObtenerDino, .Salir {
+        font-size: 16px;
+        padding: 10px;
+        margin-top: 2%;
+      }
+    }
+
+    /* MÓVILES PEQUEÑOS (576px y menos) */
+    @media (max-width: 576px) {
+      body {
+        grid-template-columns: 2.5fr 1fr;
+        gap: 6px;
+        padding: 0.5%;
+      }
+
+      .tablero {
+        border: 2px solid rgba(255, 255, 255, 1);
+      }
+
+      .draggable {
+        width: 40px;
+        height: 40px;
+      }
+
+      .BotonRedireccionInicio, 
+      .BotonRedireccionCambio, 
+      .BotonRedireccionObtenerDinos {
+        font-size: 0.7rem;
+        padding: 6px;
+        margin-bottom: 4px;
+      }
+
+      .CambioTurno, .ObtenerDino, .Salir {
+        font-size: 14px;
+        padding: 8px;
+        margin-top: 1%;
+      }
+
+      .puntuacion-container {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* PANTALLAS MUY PEQUEÑAS (320px-480px) */
+    @media (max-width: 480px) {
+      body {
+        grid-template-columns: 2.2fr 1fr;
+        gap: 5px;
+        padding: 0.3%;
+      }
+
+      .draggable {
+        width: 35px;
+        height: 35px;
+      }
+
+      .BotonRedireccionInicio, 
+      .BotonRedireccionCambio, 
+      .BotonRedireccionObtenerDinos {
+        font-size: 0.6rem;
+        padding: 4px;
+        margin-bottom: 3px;
+      }
+
+      .CambioTurno, .ObtenerDino, .Salir {
+        font-size: 12px;
+        padding: 6px;
+        margin-top: 1%;
+      }
+
+      .puntuacion-container {
+        padding: 8px;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* PANTALLAS EXTRA PEQUEÑAS (320px y menos) */
+    @media (max-width: 320px) {
+      body {
+        grid-template-columns: 2fr 1fr;
+        gap: 4px;
+        padding: 0.2%;
+      }
+
+      .draggable {
+        width: 30px;
+        height: 30px;
+      }
+
+      .BotonRedireccionInicio, 
+      .BotonRedireccionCambio, 
+      .BotonRedireccionObtenerDinos {
+        font-size: 0.5rem;
+        padding: 3px;
+        margin-bottom: 2px;
+      }
+
+      .CambioTurno, .ObtenerDino, .Salir {
+        font-size: 10px;
+        padding: 4px;
+        margin-top: 0.5%;
+      }
+
+      .puntuacion-container {
+        padding: 6px;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* TABLETS GRANDES - Solo para pantallas entre 769px y 900px */
+@media (min-width: 769px) and (max-width: 900px) {
   .tablero {
-    width: 95vw;
-    height: 50vh;
-    max-width: 100vw;
-    max-height: 60vh;
+    width: 70vw;
+    height: 60vh;
+    max-width: 80vw;
+    max-height: 70vh;
   }
+  
   .tab {
-    width: 98vw;
-    height: auto;
-    margin-top: 10px;
+    width: 25%;
+    height: 85%;
   }
-  body {
-    flex-direction: column;
-    align-items: center;
-    padding: 1%;
+  
+  .draggable {
+    width: 60px;
+    height: 60px;
   }
 }
