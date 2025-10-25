@@ -10,6 +10,7 @@
       overflow: hidden;
       font-family: 'Ubuntu', sans-serif;
     }
+    
 
     body::before {
       content: "";
@@ -164,6 +165,58 @@
       transition: transform 0.2s, background-color 0.2s;
       margin-top:5%;
     }
+    
+    .icon-btn:hover {
+      background-color: #45a049;
+      transform: scale(1.1);
+    }
+
+    /* Estilos para el sistema de puntajes */
+    .score-system {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 15px;
+      min-width: 400px;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .scores-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .player-score {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      padding: 10px 15px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1em;
+      text-align: center;
+      min-width: 120px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .player-score.leader {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+    }
+
+    .leader-display {
+      text-align: center;
+      margin-top: 10px;
+    }
 
     /* LAYOUT MÓVIL ESPECÍFICO */
     @media (max-width: 768px) {
@@ -171,7 +224,7 @@
         display: grid;
         grid-template-areas: 
           "tablero dinosaurios"
-          "puntuacion puntuacion";
+          "score score";
         grid-template-columns: 3fr 1fr;
         grid-template-rows: 1fr auto;
         height: 100vh;
@@ -200,14 +253,17 @@
         overflow-y: auto;
       }
 
-      .puntuacion-container {
-        grid-area: puntuacion;
-        background-color: rgba(245,245,220,0.95);
-        border-radius: 10px;
-        padding: 15px;
+      .score-system {
+        grid-area: score;
+        position: relative;
+        width: 100%;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        min-width: 0;
         margin-top: 10px;
-        text-align: center;
       }
+
 
       .draggable {
         width: 50px;
@@ -242,10 +298,10 @@
       }
 
       .draggable {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
       }
-
+      
       .BotonRedireccionInicio, 
       .BotonRedireccionCambio, 
       .BotonRedireccionObtenerDinos {
@@ -259,11 +315,6 @@
         padding: 8px;
         margin-top: 1%;
       }
-
-      .puntuacion-container {
-        padding: 10px;
-        font-size: 0.9rem;
-      }
     }
 
     /* PANTALLAS MUY PEQUEÑAS (320px-480px) */
@@ -275,8 +326,8 @@
       }
 
       .draggable {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
       }
 
       .BotonRedireccionInicio, 
@@ -292,11 +343,6 @@
         padding: 6px;
         margin-top: 1%;
       }
-
-      .puntuacion-container {
-        padding: 8px;
-        font-size: 0.8rem;
-      }
     }
 
     /* PANTALLAS EXTRA PEQUEÑAS (320px y menos) */
@@ -308,8 +354,8 @@
       }
 
       .draggable {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
       }
 
       .BotonRedireccionInicio, 
@@ -324,10 +370,5 @@
         font-size: 10px;
         padding: 4px;
         margin-top: 0.5%;
-      }
-
-      .puntuacion-container {
-        padding: 6px;
-        font-size: 0.7rem;
       }
     }

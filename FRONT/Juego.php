@@ -50,57 +50,6 @@ $maxJugadores = count($jugadores) > 0 ? count($jugadores) : 1;
       filter: blur(8px) brightness(0.7);
       z-index: -1;
     }
-
-    .icon-btn:hover {
-      background-color: #45a049;
-      transform: scale(1.1);
-    }
-
-    /* Estilos para el sistema de puntajes */
-    .score-system {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 15px;
-      padding: 15px;
-      min-width: 400px;
-      backdrop-filter: blur(10px);
-    }
-
-    .scores-container {
-      display: flex;
-      justify-content: space-around;
-      margin: 10px 0;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .player-score {
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-      border: 2px solid #fff;
-      border-radius: 10px;
-      padding: 8px 15px;
-      color: white;
-      font-weight: bold;
-      text-align: center;
-      min-width: 80px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-    }
-
-    .player-score.leader {
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #000;
-    }
-
-    .leader-display {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 1.1em;
-    }
-
   </style>
 </head>
 
@@ -420,10 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       
       const nombre = nombresJugadores[index] || `Jugador ${index + 1}`;
-      playerDiv.innerHTML = `
-        <div style="font-size: 0.9em;">${nombre}</div>
-        <div style="font-size: 1.2em;">${puntaje}</div>
-      `;
+      playerDiv.textContent = `${nombre}: ${puntaje}`;
       
       scoresContainer.appendChild(playerDiv);
     });
