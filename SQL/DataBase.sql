@@ -45,7 +45,9 @@ CREATE TABLE partida_draftosaurus (
     Player5 VARCHAR(30),
     jugador_ganador VARCHAR(30),
     numero_jugadores INT NOT NULL,
-    estado VARCHAR(50) NOT NULL DEFAULT 'pendiente'
+    id_creador INT,
+    estado VARCHAR(50) NOT NULL DEFAULT 'pendiente',
+    FOREIGN KEY (id_creador) REFERENCES usuario (ID_Usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE tablero(

@@ -36,11 +36,11 @@ if (
     $player5 = !empty($_POST['Player5']) ? $_POST['Player5'] : null;
 
     $sql = "INSERT INTO partida_draftosaurus 
-            (Player1, Player2, Player3, Player4, Player5, numero_jugadores) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+            (Player1, Player2, Player3, Player4, Player5, numero_jugadores, id_creador) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssi", $player1, $player2, $player3, $player4, $player5, $num_jugadores);
+    $stmt->bind_param("sssssii", $player1, $player2, $player3, $player4, $player5, $num_jugadores, $_SESSION['ID']);
     
 
     $_SESSION['jugadores'] = [
